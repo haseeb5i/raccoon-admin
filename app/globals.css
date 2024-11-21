@@ -1,0 +1,166 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: 'IBMPlexSans';
+  src: url('../public/assets/fonts/IBMPlexSans-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IBMPlexSans';
+  src: url('../public/assets/fonts/IBMPlexSans-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IBMPlexSans';
+  src: url('../public/assets/fonts/IBMPlexSans-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IBMPlexSans';
+  src: url('../public/assets/fonts/IBMPlexSans-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IBMPlexSans';
+  src: url('../public/assets/fonts/IBMPlexSans-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-display: swap;
+}
+
+:root {
+  --white: #fff;
+  --primary: #5156be;
+  --secondary: #00b3ff;
+  --red: #ff0000;
+  --gray: #545454;
+  --gray-2: #313533;
+  --gray-3: #313533bf;
+  --gray-4: #313533;
+  --gray-5: #f8f9fa;
+  --black: #000000;
+  --placeholder: #495057;
+  --light-black: #74788d;
+  --green: #93c349;
+  --orange: #f6b01c;
+  --dark-orange: #ea7023;
+  --yellow: #f4e409;
+  --light-gray: #e9e9ef;
+  --light-gray-2: #d4d4d4;
+  --background: #fbfaff;
+  --dark-gray: #3e5259;
+  --light-blue: #e4f3f3;
+  --light-pink: rgb(251, 236, 236);
+  --dark-pink: #bf1650;
+  --font-Light: 300;
+  --font-Regular: 400;
+  --font-Medium: 500;
+  --font-Semibold: 600;
+  --font-Bold: 700;
+  --font-IBM: 'IBM Plex Sans', sans-serif;
+  --gradient-primary: rgba(0, 156, 169, 0.7);
+  --gradient-2: rgba(0, 156, 169, 0.75) rgba(0, 156, 169, 1);
+}
+
+body {
+  font-family: 'IBMPlexSans';
+  scroll-behavior: smooth;
+}
+
+.main-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+input {
+  outline: none;
+  border: none;
+  font-family: var(--font-Regular);
+}
+
+/* Hide number input arrows */
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+button[disabled] {
+  cursor: not-allowed;
+}
+
+.text-oneline,
+.text-threeline,
+.text-foreline,
+.text-sixline {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  white-space: normal;
+}
+
+.text-oneline {
+  -webkit-line-clamp: 1;
+}
+.text-threeline {
+  -webkit-line-clamp: 3;
+}
+.text-foreline {
+  -webkit-line-clamp: 4;
+}
+.text-sixline {
+  -webkit-line-clamp: 6;
+}
+
+/*  Custom Scrollbar  */
+#scrollbar::-webkit-scrollbar,
+.scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+#scrollbar::-webkit-scrollbar-track,
+.scrollbar::-webkit-scrollbar-track {
+  background: #fffefe;
+}
+
+#scrollbar::-webkit-scrollbar-thumb,
+.scrollbar::-webkit-scrollbar-thumb {
+  background: #efefef;
+}
+
+.hide_scrollbar::-webkit-scrollbar-thumb,
+.hide_scrollbar::-webkit-scrollbar-track {
+  background: white;
+}
+
+/* Disable form elements */
+button:disabled,
+input:disabled,
+select:disabled {
+  cursor: not-allowed !important;
+  opacity: 0.5;
+}
