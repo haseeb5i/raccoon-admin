@@ -23,11 +23,7 @@ import { SHADOWNET_TOKEN, SHADOWNET_USER } from '@/utils/constant';
 import { setCookie } from '@/utils/cookie';
 import { showToast } from '@/utils/toast';
 
-type PropsTypes = {
-  setActive: React.Dispatch<React.SetStateAction<number>>;
-};
-
-const LoginForm = ({ setActive }: PropsTypes) => {
+const LoginForm = () => {
   const router = useRouter();
   const [login, { isLoading }] = useLoginMutation({});
 
@@ -47,12 +43,11 @@ const LoginForm = ({ setActive }: PropsTypes) => {
       } = await login(data);
 
       if (res?.data) {
-        const { accessToken } = res.data;
-        const userData = JSON.stringify(res.data.user);
+        const userData = { id: 1, name: 'Admin' };
 
-        setCookie(SHADOWNET_TOKEN, accessToken);
-        setCookie(SHADOWNET_USER, userData);
-        await router.push('/');
+        setCookie(SHADOWNET_TOKEN, data.apiKey);
+        setCookie(SHADOWNET_USER, JSON.stringify(userData));
+        router.push('/');
 
         showToast({
           type: 'success',
@@ -83,31 +78,13 @@ const LoginForm = ({ setActive }: PropsTypes) => {
         <div className="mb-6">
           <div className="mb-5">
             <Controller
-              name="email"
+              name="apiKey"
               control={control}
-              rules={{
-                required: 'Email is required',
-                pattern: {
-                  value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                  message: 'Invalid email address',
-                },
-              }}
-              render={({ field }) => (
-                <Input label="Email" name="email" field={field} errors={errors} />
-              )}
-            />
-          </div>
-          <div className="mb-5">
-            <Controller
-              name="password"
-              control={control}
-              rules={{
-                required: 'Password is required',
-              }}
+              rules={{ required: 'apiKey is required' }}
               render={({ field }) => (
                 <Input
-                  label="Password"
-                  name="password"
+                  label="Api Key"
+                  name="apiKey"
                   field={field}
                   type="password"
                   errors={errors}
@@ -118,10 +95,6 @@ const LoginForm = ({ setActive }: PropsTypes) => {
         </div>
       </div>
 
-      <Text containerTag="h2" className="mb-3 text-pretty text-xs font-medium">
-        Having trouble signing in?
-      </Text>
-
       <Button
         size="md"
         fullWidth
@@ -131,13 +104,6 @@ const LoginForm = ({ setActive }: PropsTypes) => {
       >
         Sign In
       </Button>
-
-      <Text containerTag="h2" className="mt-2 text-xs font-medium">
-        {`Don't`} have an account?{' '}
-        <span className="cursor-pointer text-primary" onClick={() => setActive(2)}>
-          Sign Up
-        </span>
-      </Text>
     </form>
   );
 };

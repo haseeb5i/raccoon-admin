@@ -7,7 +7,7 @@ import CopyRight from '@/components/organisms/CopyRight';
 import Header from '@/components/organisms/Header';
 import Sidebar from '@/components/organisms/Sidebar/Sidebar';
 
-const layout = ({ children }: { children: React.ReactNode }) => {
+const Layout = ({ children }: { children: React.ReactNode }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isHidden, setIsHidden] = useState<boolean>(false);
 
@@ -27,4 +27,4 @@ const layout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default layout;
+export default Layout;

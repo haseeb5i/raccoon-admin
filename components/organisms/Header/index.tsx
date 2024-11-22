@@ -19,9 +19,6 @@ import { SHADOWNET_TOKEN, SHADOWNET_USER } from '@/utils/constant';
 // Types
 import { UserData } from '@/types/loginTypes';
 
-// Redux
-import { useLogoutMutation } from '@/redux/slice/loginSlice';
-
 // Icons
 import { IoMdMenu } from 'react-icons/io';
 
@@ -36,8 +33,6 @@ const Header = ({
 }) => {
   const router = useRouter();
   const [user, setUser] = useState<UserData | null>(null);
-
-  const [logout] = useLogoutMutation({});
 
   useEffect(() => {
     const userData = getCookie(SHADOWNET_USER);
@@ -58,7 +53,7 @@ const Header = ({
         removeCookie(SHADOWNET_USER);
         removeCookie(SHADOWNET_TOKEN);
         router.push('/login');
-        await logout({});
+        // await logout({});
       },
     },
   ];

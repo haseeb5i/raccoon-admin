@@ -1,5 +1,5 @@
 import { Card, Divider, Skeleton } from '@nextui-org/react';
-import { FC } from 'react';
+import { FC, Fragment } from 'react';
 import { SKELETON_VARIANT } from '@/utils/enums';
 
 interface CustomSkeletonProps {
@@ -24,7 +24,7 @@ const CustomSkeleton: FC<CustomSkeletonProps> = ({ variant }) => {
           {Array(4)
             .fill(0)
             .map((_, ind) => (
-              <>
+              <Fragment key={`TableSkeleton2: ${ind}`}>
                 <div
                   key={`TableSkeleton2: ${ind}`}
                   className="flex justify-between gap-12 py-2"
@@ -41,7 +41,7 @@ const CustomSkeleton: FC<CustomSkeletonProps> = ({ variant }) => {
                     ))}
                 </div>
                 <Divider className="h-[2px]" />
-              </>
+              </Fragment>
             ))}
         </div>
 

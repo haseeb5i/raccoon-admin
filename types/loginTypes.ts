@@ -1,6 +1,5 @@
 export interface LoginType {
-  email: string;
-  password: string;
+  apiKey: string;
 }
 
 export interface LoginData {

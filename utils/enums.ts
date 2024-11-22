@@ -5,6 +5,7 @@ export enum CUSTOM_CELL_TYPE {
   BADGE = 'BADGE',
   LINK = 'LINK',
   ACTION = 'ACTION',
+  IMAGE = 'IMAGE',
   DATE = 'DATE',
   EYE = 'EYE',
   DESCRIPTOR = 'DESCRIPTOR',

@@ -7,7 +7,7 @@ import { CloseCircle } from 'iconsax-react';
 import Text from '@/components/atoms/commonText';
 
 // Data
-import { SidebarLinks } from '@/data';
+import { SidebarLinks } from '@/components/organisms/Sidebar/sidebar-data';
 
 // Next
 import { usePathname } from 'next/navigation';
@@ -61,10 +61,7 @@ const Sidebar: React.FC<SidebarIF> = ({ isOpen, isHidden, setIsHidden }) => {
 
         <ul className="border-r border-content2 px-3 pt-4">
           {SidebarLinks.map((item, index) => {
-            const isActives =
-              item.href !== '/'
-                ? pathname.includes(item.title.toLocaleLowerCase())
-                : pathname === item.href;
+            const isActives = pathname.startsWith(item.href);
 
             return (
               <li

@@ -25,7 +25,7 @@ const CustomPagination: FC<CustomPaginationProps> = ({
         onChange={page => setCurrentPage(page)}
         className="text-base font-medium"
         classNames={{
-          item: ['!text-default', '!font-bold', 'h-10', 'w-10'],
+          item: ['!text-default-400', '!font-bold', 'h-10', 'w-10'],
           cursor: ['h-10', 'w-10'],
         }}
       />
@@ -35,7 +35,7 @@ const CustomPagination: FC<CustomPaginationProps> = ({
         <label className="flex items-center gap-2 text-base font-medium text-default-500">
           Show
           <select
-            className="rounded-lg bg-primary-foreground p-1 text-small text-default-400 outline-none"
+            className="rounded-lg bg-primary-foreground p-1 text-small text-default-500 outline-none"
             value={rowsPerPage}
             onChange={e => {
               setCurrentPage(1);

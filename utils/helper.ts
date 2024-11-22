@@ -21,6 +21,8 @@ export function formatDate(dateString: string): string {
 }
 
 export const isTokenExpired = (token: string) => {
+  if (!token) return true
+  return false
   try {
     const decoded = jwt.decode(token) as { exp: number };
     if (!decoded || !decoded.exp) {
@@ -68,3 +70,12 @@ export const sortArray = (
     return b[field] < a[field] ? 1 : -1;
   });
 };
+
+
+export function requiredErrorMsg(fieldName: string) {
+  return `${fieldName} is required`;
+}
+
+export function minErrorMsg(fieldName: string, min: number) {
+  return `${fieldName} must be at least ${min}`;
+}

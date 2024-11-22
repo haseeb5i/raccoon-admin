@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { BADGE_VARIANTS } from '@/utils/enums';
+import { BADGE_VARIANTS, CUSTOM_CELL_TYPE } from '@/utils/enums';
 import { dropDownMenus } from './dropDownTypes';
 import { Dispatch, SetStateAction } from 'react';
 
@@ -8,20 +8,7 @@ export interface BreadCrumbsProps {
   link: string;
 }
 
-export enum CUSTOM_CELL_TYPE {
-  TEXT = 'TEXT',
-  TEXTWITHSUBTEXT = 'TEXTWITHSUBTEXT',
-  BADGE = 'BADGE',
-  LINK = 'LINK',
-  ACTION = 'ACTION',
-  DATE = 'DATE',
-  EYE = 'EYE',
-  DESCRIPTOR = 'DESCRIPTOR',
-  DEBIT = 'DEBIT',
-  CREDIT = 'CREDIT',
-}
-
-export type PaginationTypes = {
+export type PaginationType = {
   page: number;
   limit: number;
 };
@@ -29,8 +16,8 @@ export type PaginationTypes = {
 export type SelectedRowsType = Set<string> | 'all';
 
 export type TableRowTypes = {
-  key: string;
-  [key: string]: string;
+  key: string | number;
+  [key: string]: string | number | boolean;
 };
 
 export interface CustomTableProps {
@@ -48,8 +35,8 @@ export interface CustomTableProps {
   showActionDropdown?: boolean;
   isEmpty?: boolean;
   totalCount?: number;
-  pagination?: PaginationTypes;
-  setPagination?: Dispatch<SetStateAction<PaginationTypes>>;
+  pagination?: PaginationType;
+  setPagination?: Dispatch<SetStateAction<PaginationType>>;
   selectedRows?: SelectedRowsType;
   setSelectedRows?: (_data: any) => void;
   conditionalType?: string;
@@ -95,3 +82,84 @@ export interface PostType {
   content: string;
   id: number;
 }
+
+export type FindAllParams = PaginationType & {};
+
+export type Paginated<T> = {
+  data: T[];
+  total: number;
+  page: number;
+  limit: number;
+};
+
+export type User = {
+  tgId: string;
+  username: string;
+  referralCode: string;
+  currentPoints: number;
+  totalPoints: number;
+  fuelCapacity: number;
+  active: boolean;
+  createdAt: string;
+  updatedAt: string;
+};
+
+// TODO: handle boolean at table level
+export type UserWithKey = User & {
+  key: string;
+  isActive: string;
+};
+
+export type Task = {
+  taskId: number;
+  iconUrl: string;
+  taskTitle: string;
+  taskLink?: string;
+  taskType: number;
+  rewardPoints: number;
+  repeatable: boolean;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type TaskWithKey = Task & {
+  key: number;
+  canRepeat: string;
+  taskLink: string;
+};
+
+export type TaskActivity = {
+  taskActivityId: number;
+  tgId: string;
+  taskId: number;
+  task: {
+    type: number;
+    title: string;
+  };
+  user: { username: string };
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type TaskActivityWithKey = {
+  key: number;
+  taskTitle: string;
+  taskUser: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type TapActivity = {
+  tapActivityId: number;
+  tgId: string;
+  user: { username: string };
+  points: number;
+  fuel: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type TapActivityWithKey = Omit<TapActivity, 'user'> & {
+  key: number;
+  tapUser: string;
+};

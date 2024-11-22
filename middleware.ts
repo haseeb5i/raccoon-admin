@@ -1,10 +1,9 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { isTokenExpired } from './utils/helper';
 
 export async function middleware(request: NextRequest) {
   const token = request.cookies.get('shadownet_token')?.value;
-  const expiredToken = isTokenExpired(token as string);
+  const expiredToken = !token;
 
   // Redirect unauthenticated users to login page
   if (expiredToken) {

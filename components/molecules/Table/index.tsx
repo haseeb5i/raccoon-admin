@@ -21,13 +21,12 @@ import CustomSkeleton from '@/components/atoms/Skeleton';
 import Empty from '@/components/atoms/Empty';
 
 // Utils
-import { SKELETON_VARIANT, STATUS } from '@/utils/enums';
+import { CUSTOM_CELL_TYPE, SKELETON_VARIANT, STATUS } from '@/utils/enums';
 import { statusVariant } from '@/utils/constant';
 import { removeWhiteSpaces, sortArray } from '@/utils/helper';
 
 // Types
 import {
-  CUSTOM_CELL_TYPE,
   CustomTableProps,
   TableColumnTypes,
   TableSortTypes,
@@ -93,7 +92,7 @@ const CustomTable = ({
 
       return rows;
     }
-  }, [pagination.page, pagination.limit, rows, sort]);
+  }, [rows, sort]);
 
   const classNames = useMemo(
     () => ({

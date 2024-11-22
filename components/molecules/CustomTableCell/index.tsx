@@ -9,7 +9,8 @@ import Text from '@/components/atoms/commonText';
 import ActionDropdown from '@/components/atoms/ActionDropdown';
 
 // Types
-import { CUSTOM_CELL_TYPE, CustomTableCellProps } from '@/types/commonTypes';
+import { CustomTableCellProps } from '@/types/commonTypes';
+import { CUSTOM_CELL_TYPE } from '@/utils/enums';
 
 // Icons
 import { Eye, Trash } from 'iconsax-react';
@@ -106,6 +107,9 @@ const CustomTableCell: FC<PropsWithChildren<CustomTableCellProps>> = ({
 
     case CUSTOM_CELL_TYPE.DATE:
       return <div>{formatDate(children as string)}</div>;
+
+    case CUSTOM_CELL_TYPE.IMAGE:
+      return <img src={children as string} className="size-16 min-w-16" />;
 
     case CUSTOM_CELL_TYPE.EYE:
       return (

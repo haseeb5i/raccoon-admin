@@ -1,5 +1,5 @@
 // Component
-import LoginRegister from '@/components/molecules/loginAndRegister';
+import LoginRegister from '@/components/molecules/LoginAndRegister';
 
 const page = () => {
   return (

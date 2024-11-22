@@ -2,19 +2,22 @@ import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { loginSlice } from './slice/loginSlice';
 import { userSlice } from './slice/userSlice';
-import { postSlice } from './slice/postSlice';
+import { taskSlice } from './slice/taskSlice';
+import { activitySlice } from './slice/activitySlice';
 
 export const store = configureStore({
   reducer: {
     [loginSlice.reducerPath]: loginSlice.reducer,
     [userSlice.reducerPath]: userSlice.reducer,
-    [postSlice.reducerPath]: postSlice.reducer,
+    [taskSlice.reducerPath]: taskSlice.reducer,
+    [activitySlice.reducerPath]: activitySlice.reducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({}).concat([
       loginSlice.middleware,
       userSlice.middleware,
-      postSlice.middleware,
+      taskSlice.middleware,
+      activitySlice.middleware,
     ]),
 });
 
