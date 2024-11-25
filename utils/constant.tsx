@@ -17,3 +17,14 @@ export const statusVariant = {
   [STATUS.ERROR]: BADGE_VARIANTS.DANGER,
   [STATUS.ERRORBANKCONNECTION]: BADGE_VARIANTS.DANGER,
 };
+
+export const taskTypeLookup = {
+  1: 'dailyReward',
+  2: 'quest',
+  4: 'referral',
+  5: 'xRetweet',
+  6: 'xReply',
+  7: 'xFollow',
+  9: 'dailyVideo',
+  10: 'ytSubscribe',
+} as Record<number, string>;

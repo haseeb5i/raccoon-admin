@@ -42,6 +42,7 @@ const Input = (props: InputFieldType) => {
     showSuggestions = true,
     setShowSuggestions,
     isLoading,
+    readOnly,
   } = props;
 
   const [isVisible, setIsVisible] = useState(false);
@@ -97,6 +98,7 @@ const Input = (props: InputFieldType) => {
   return (
     <div className={`relative ${widhtFull ? 'w-full' : ''}`}>
       <NextUlInput
+        readOnly={readOnly}
         labelPlacement="inside"
         type={inputType || 'text'}
         label={labelText}
@@ -144,7 +146,7 @@ const Input = (props: InputFieldType) => {
           )
         }
         placeholder={placeholder}
-        onKeyPress={onKeyPress}
+        onKeyDown={onKeyPress}
       />
 
       {showErrorMessage && errors && errors[field.name] && (

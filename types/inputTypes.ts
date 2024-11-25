@@ -16,6 +16,7 @@ export type InputFieldType = {
   type?: 'text' | 'password' | 'email' | 'number' | undefined;
   name?: string;
   disabled?: boolean;
+  readOnly?: boolean;
   field: {
     name: string;
     value: string | number | undefined;

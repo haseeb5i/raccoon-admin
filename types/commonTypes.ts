@@ -113,13 +113,22 @@ export type UserWithKey = User & {
 export type Task = {
   taskId: number;
   iconUrl: string;
-  taskTitle: string;
-  taskLink?: string;
-  taskType: number;
-  rewardPoints: number;
+  title: string;
+  link?: string;
+  type: number;
+  rewardCoins: number;
   repeatable: boolean;
   createdAt: string;
   updatedAt: string;
+  streakRewards: Array<{
+    dayCount: number;
+    rewardCoins: number | string; // for form compat
+  }>;
+  tweetId?: string; // for xReply and xRetweet
+  targetUsername?: string; // for xFollow
+  targetChannel?: string; // for youtube follow
+  metadata: Record<string, string>;
+  expiresAt: string | null
 };
 
 export type TaskWithKey = Task & {

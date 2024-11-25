@@ -80,7 +80,7 @@ const ActivityTable: TableColumnTypes[] = [
   },
   {
     key: 'fuelCapacity',
-    label: 'Fuel Cap',
+    label: 'Total Arrows',
     type: CUSTOM_CELL_TYPE.TEXT,
   },
   {

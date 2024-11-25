@@ -1,5 +1,5 @@
 import { FindAllParams, Paginated, Task, TaskWithKey } from '@/types/commonTypes';
-import { SHADOWNET_TOKEN } from '@/utils/constant';
+import { SHADOWNET_TOKEN, taskTypeLookup } from '@/utils/constant';
 import { getCookie } from '@/utils/cookie';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
@@ -33,14 +33,15 @@ export const taskSlice = createApi({
         url: `/tasks?page=${page}&limit=${limit}`,
         method: 'GET',
       }),
-      transformResponse: (response: Paginated<Task>) => {
+      transformResponse: (response: Paginated<Task >) => {
         return {
           ...response,
           data: response.data.map(item => ({
             ...item,
             key: item.taskId,
             canRepeat: item.repeatable ? 'Yes' : 'No',
-            taskLink: item.taskLink ?? '',
+            taskLink: item.link ?? '',
+            typeLabel: taskTypeLookup[item.type],
           })),
         };
       },

@@ -96,7 +96,7 @@ const page = () => {
 
 const TaskTable: TableColumnTypes[] = [
   {
-    key: 'taskTitle',
+    key: 'title',
     label: 'Title',
     type: CUSTOM_CELL_TYPE.TEXT,
   },
@@ -106,12 +106,12 @@ const TaskTable: TableColumnTypes[] = [
     type: CUSTOM_CELL_TYPE.IMAGE,
   },
   {
-    key: 'taskLink',
-    label: 'taskLink',
-    type: CUSTOM_CELL_TYPE.LINK,
+    key: 'typeLabel',
+    label: 'Type',
+    type: CUSTOM_CELL_TYPE.TEXT,
   },
   {
-    key: 'rewardPoints',
+    key: 'rewardCoins',
     label: 'Reward Points',
     type: CUSTOM_CELL_TYPE.TEXT,
   },

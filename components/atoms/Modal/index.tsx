@@ -47,6 +47,7 @@ const Modal: React.FC<PopUpModalProps> = ({
       isOpen={isOpen}
       onOpenChange={onClose}
       size="md"
+      scrollBehavior={'inside'}
       classNames={{
         closeButton: 'mt-[6px]',
       }}
@@ -65,7 +66,7 @@ const Modal: React.FC<PopUpModalProps> = ({
             <ModalFooter className="flex items-center justify-between">
               <CustomButton
                 variant="light"
-                className="bg-grayColor5 border-grayColor5 border-y-1 text-foreground"
+                className="border-y-1 border-grayColor5 bg-grayColor5 text-foreground"
                 onClick={onClose}
               >
                 {secondaryButtonLabel || 'Close'}
