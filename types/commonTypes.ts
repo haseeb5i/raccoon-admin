@@ -77,12 +77,6 @@ export type ActionDropdownProps = {
 
 export interface CustomTableCellProps extends TableCellProps, ActionDropdownProps {}
 
-export interface PostType {
-  title: string;
-  content: string;
-  id: number;
-}
-
 export type FindAllParams = PaginationType & {};
 
 export type Paginated<T> = {
@@ -128,7 +122,7 @@ export type Task = {
   targetUsername?: string; // for xFollow
   targetChannel?: string; // for youtube follow
   metadata: Record<string, string>;
-  expiresAt: string | null
+  expiresAt: string | null;
 };
 
 export type TaskWithKey = Task & {
@@ -171,4 +165,48 @@ export type TapActivity = {
 export type TapActivityWithKey = Omit<TapActivity, 'user'> & {
   key: number;
   tapUser: string;
+};
+
+export type Clan = {
+  clanId: number;
+  name: string;
+  chainId: number;
+  tokenAddr: string;
+  tokenLogo: string;
+  mascotUrl: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type ClanWithKey = Clan & { key: number };
+
+export type Enemy = {
+  enemyTypeId: number;
+  enemyType: string;
+  baseSpeed: number;
+  hitPoints: number;
+  baseXP: number;
+  lateralMove: number;
+  dropArrows: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type EnemyWithKey = Enemy & {
+  key: number;
+};
+
+export type Wave = {
+  waveId: number;
+  index: number;
+  arrowsForWave: number;
+  spawnRate: number;
+  speedMultiplier: number;
+  arrowDropMultiplier: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type WaveWithKey = Wave & {
+  key: number;
 };

@@ -30,6 +30,7 @@ const Page = () => {
   });
 
   const usersData = data?.data;
+  console.log(usersData)
 
   const onEdit = (data: EditData) => {
     const filterData = usersData?.filter(item => item.tgId === data.tgId);

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { Button, Select, SelectItem, Switch } from '@nextui-org/react';
+import { Button, DateInput, Select, SelectItem, Switch } from '@nextui-org/react';
 
 // use hook form
 import {
@@ -29,8 +29,14 @@ import { showToast } from '@/utils/toast';
 import { minErrorMsg, requiredErrorMsg } from '@/utils/helper';
 import FileUpload from '@/components/FileUpload';
 import { MdAddCircleOutline, MdClear as MdClearIcon } from 'react-icons/md';
+import { DateValue, getLocalTimeZone, parseDate, today } from '@internationalized/date';
 
-type FormType = Omit<Task, 'taskId' | 'createdAt' | 'updatedAt' | 'metadata'>;
+type FormType = Omit<
+  Task,
+  'taskId' | 'createdAt' | 'updatedAt' | 'metadata' | 'expiresAt'
+> & {
+  expirey?: DateValue | null;
+};
 
 const defaultValues: FormType = {
   repeatable: false,
@@ -69,8 +75,14 @@ const TaskModel = ({
 
   useEffect(() => {
     if (isEdit && editData) {
+      let expirey: DateValue | undefined;
+      if (editData.expiresAt) {
+        expirey = parseDate(editData.expiresAt);
+      }
+
       reset({
         ...editData,
+        expirey,
         link: editData.link ?? '',
         ...editData.metadata,
       });
@@ -101,12 +113,13 @@ const TaskModel = ({
           type: 'success',
         });
       }
+      console.log(data, formattedData)
     } catch (error) {
       showToast({ message: 'An error occurred', type: 'error' });
       console.error('error on login', error);
     } finally {
-      setOpen(false);
-      reset();
+      // setOpen(false);
+      // reset();
     }
   };
 
@@ -194,6 +207,27 @@ const TaskModel = ({
                   <SelectItem key={item.key}>{item.label}</SelectItem>
                 ))}
               </Select>
+            )}
+          />
+
+          <Controller
+            name="expirey"
+            control={control}
+            rules={{
+              required: taskType === 9 ? requiredErrorMsg('Expires At') : undefined,
+            }}
+            render={({ field }) => (
+              <DateInput
+                {...field}
+                classNames={{
+                  label: 'text-default-400 text-xs',
+                  segment: "text-foreground sm:text-xs text-xs"
+                }}
+                minValue={today(getLocalTimeZone())}
+                label="Expires At"
+                isInvalid={!!errors.expirey?.message}
+                errorMessage={errors.expirey?.message?.toString()}
+              />
             )}
           />
 
