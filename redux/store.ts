@@ -6,6 +6,7 @@ import { taskSlice } from './slice/taskSlice';
 import { activitySlice } from './slice/activitySlice';
 import { clanSlice } from './slice/clanSlice';
 import { gameSlice } from './slice/gameSlice';
+import { avatarSlice } from './slice/avatarSlice';
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     [clanSlice.reducerPath]: clanSlice.reducer,
     [taskSlice.reducerPath]: taskSlice.reducer,
     [gameSlice.reducerPath]: gameSlice.reducer,
+    [avatarSlice.reducerPath]: avatarSlice.reducer,
     [activitySlice.reducerPath]: activitySlice.reducer,
   },
   middleware: getDefaultMiddleware =>
@@ -23,7 +25,8 @@ export const store = configureStore({
       taskSlice.middleware,
       activitySlice.middleware,
       clanSlice.middleware,
-      gameSlice.middleware
+      gameSlice.middleware,
+      avatarSlice.middleware,
     ]),
 });
 

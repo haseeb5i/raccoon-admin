@@ -11,7 +11,7 @@ import WaveModel from './wave-model';
 import { useAllWavesQuery } from '@/redux/slice/gameSlice';
 
 // Types
-import { Wave, PaginationType, TableColumnTypes } from '@/types/commonTypes';
+import { Wave, PaginationType, TableColumnTypes, WaveWithKey } from '@/types/commonTypes';
 import { CUSTOM_CELL_TYPE } from '@/utils/enums';
 
 const page = () => {
@@ -29,11 +29,12 @@ const page = () => {
     limit: pagination.limit,
   });
 
-  const wavesData = data?.data ?? [];
+  type WithoutComposite = Omit<WaveWithKey, 'enemiesPerType'>;
+  const wavesData = (data?.data ?? []) as WithoutComposite[];
 
-  const onEdit = (data: Wave) => {
+  const onEdit = (waveData: Wave) => {
     setIsEdit(true);
-    const filterData = wavesData?.filter(item => item.waveId === data.waveId);
+    const filterData = data?.data?.filter(item => item.waveId === waveData.waveId);
     setEditData(filterData?.[0] ?? null);
     setIsOpen(true);
   };

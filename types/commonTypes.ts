@@ -205,8 +205,36 @@ export type Wave = {
   arrowDropMultiplier: number;
   createdAt: string;
   updatedAt: string;
+  enemiesPerType: {
+    count: number;
+    enemyTypeId: number;
+  }[];
 };
 
 export type WaveWithKey = Wave & {
   key: number;
+};
+
+type AvatarVariant = {
+  variantId: number;
+  requiredLevel: number;
+  imageUrl: string;
+  avatarId: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type Avatar = {
+  avatarId: number;
+  clanId: number;
+  name?: string;
+  createdAt: string;
+  updatedAt: string;
+  clan: { name: string };
+  variants: AvatarVariant[];
+};
+
+export type AvatarWithKey = Avatar & {
+  key: number;
+  clanName: string;
 };

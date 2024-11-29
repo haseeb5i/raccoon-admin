@@ -80,7 +80,7 @@ const WaveModel = ({
 
   useEffect(() => {
     if (isEdit && editData) {
-      reset(editData);
+      reset({ ...editData, enemyTypes: editData.enemiesPerType });
     } else {
       reset(defaultValues);
     }
@@ -218,7 +218,7 @@ const AddEnemyInWave = ({ control, errors }: AddEnemyInWaveProps) => {
                   if (!data.currentKey) return;
                   field.onChange(parseInt(data.currentKey));
                 }}
-                label="Select Enemy Type"
+                label="Enemy Type"
               >
                 {item => <SelectItem key={item.enemyTypeId}>{item.enemyType}</SelectItem>}
               </Select>
