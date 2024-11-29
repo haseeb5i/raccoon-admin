@@ -39,20 +39,6 @@ export const gameSlice = createApi({
       },
       providesTags: [{ type: 'Game', id: 'Enemy' }],
     }),
-    allWaves: builder.query<Paginated<WaveWithKey>, FindAllParams>({
-      query: ({ page = 1, limit = 10 }) => ({
-        url: `/game?type=wave&page=${page}&limit=${limit}`,
-        method: 'GET',
-      }),
-      transformResponse: (response: Paginated<Wave>) => {
-        return {
-          ...response,
-          data: response.data.map(item => ({ ...item, key: item.waveId })),
-        };
-      },
-      providesTags: [{ type: 'Game', id: 'Wave' }],
-    }),
-
     addEnemy: builder.mutation({
       query: data => ({
         url: '/game/enemy',
@@ -69,6 +55,36 @@ export const gameSlice = createApi({
       }),
       invalidatesTags: [{ type: 'Game', id: 'Enemy' }],
     }),
+
+    allWaves: builder.query<Paginated<WaveWithKey>, FindAllParams>({
+      query: ({ page = 1, limit = 10 }) => ({
+        url: `/game?type=wave&page=${page}&limit=${limit}`,
+        method: 'GET',
+      }),
+      transformResponse: (response: Paginated<Wave>) => {
+        return {
+          ...response,
+          data: response.data.map(item => ({ ...item, key: item.waveId })),
+        };
+      },
+      providesTags: [{ type: 'Game', id: 'Wave' }],
+    }),
+    addWave: builder.mutation({
+      query: data => ({
+        url: '/game/wave',
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: [{ type: 'Game', id: 'Wave' }],
+    }),
+    updateWave: builder.mutation({
+      query: ({ data, id }) => ({
+        url: `/game/wave/${id}`,
+        method: 'PATCH',
+        body: data,
+      }),
+      invalidatesTags: [{ type: 'Game', id: 'Wave' }],
+    }),
   }),
 });
 
@@ -77,4 +93,6 @@ export const {
   useAllEnemiesQuery,
   useAddEnemyMutation,
   useUpdateEnemyMutation,
+  useAddWaveMutation,
+  useUpdateWaveMutation
 } = gameSlice;

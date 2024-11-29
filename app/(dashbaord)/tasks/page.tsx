@@ -34,8 +34,8 @@ const page = () => {
     limit: pagination.limit,
   });
 
-  type WithoutComposite = Omit<TaskWithKey, 'streakRewards' | 'metadata'>[];
-  const tasksData = data?.data as WithoutComposite;
+  type WithoutComposite = Omit<TaskWithKey, 'streakRewards' | 'metadata'>;
+  const tasksData = (data?.data ?? []) as WithoutComposite[];
 
   const [deleteData] = useDeleteTaskMutation();
 
@@ -79,7 +79,7 @@ const page = () => {
 
       <CustomTable
         columns={TaskTable}
-        rows={tasksData!}
+        rows={tasksData}
         isLoading={isFetching || isLoading}
         isEmpty={tasksData?.length === 0}
         onDelete={(data: Task) => onDelete(data.taskId)}

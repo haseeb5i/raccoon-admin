@@ -82,8 +82,8 @@ export type FindAllParams = PaginationType & {};
 export type Paginated<T> = {
   data: T[];
   total: number;
-  page: number;
-  limit: number;
+  page?: number;
+  limit?: number;
 };
 
 export type User = {

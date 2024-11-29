@@ -69,7 +69,7 @@ const FileUpload = forwardRef<HTMLDivElement, ImageUploadProps>(
             onChange={onChangeHandler}
           />
           <input id="file" type="hidden" />
-          <br />
+          <br className='h-2' />
           <span className={styles} {...getButtonProps()}>
             Upload
             {isUploadLoading ? <Spinner color="current" size="sm" /> : <MdFileUpload />}

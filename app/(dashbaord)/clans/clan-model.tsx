@@ -27,7 +27,7 @@ type FormType = Omit<Clan, 'clanId' | 'createdAt' | 'updatedAt'>;
 const defaultValues: FormType = {
   chainId: 1,
   mascotUrl: '',
-  tokenAddr: '',
+  tokenAddr: '0x0',
   name: '',
   tokenLogo: '',
 };
@@ -79,7 +79,6 @@ const ClanModel = ({
           message: `Clan ${isEdit ? 'updated' : 'added'} successfully`,
         });
       }
-      console.log(data, formattedData);
     } catch (error) {
       showToast({ message: 'An error occurred', type: 'error' });
       console.error('error on login', error);
@@ -141,10 +140,13 @@ const ClanModel = ({
           }}
           control={control}
           render={({ field }) => (
-            <FileUpload
-              {...field}
-              onError={message => showToast({ message, type: 'error' })}
-            />
+            <div>
+              <p className="text-foreground text-sm">Upload Logo</p>
+              <FileUpload
+                {...field}
+                onError={message => showToast({ message, type: 'error' })}
+              />
+            </div>
           )}
         />
 
@@ -155,10 +157,13 @@ const ClanModel = ({
           }}
           control={control}
           render={({ field }) => (
-            <FileUpload
-              {...field}
-              onError={message => showToast({ message, type: 'error' })}
-            />
+            <div className='mt-3'>
+              <p className="text-foreground text-sm">Upload Mascot</p>
+              <FileUpload
+                {...field}
+                onError={message => showToast({ message, type: 'error' })}
+              />
+            </div>
           )}
         />
       </form>
