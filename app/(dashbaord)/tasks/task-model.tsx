@@ -109,8 +109,8 @@ const TaskModel = ({
         : await addTask(formattedData);
       if (res?.data) {
         showToast({
-          message: `Task ${isEdit ? 'updated' : 'added'} successfully`,
           type: 'success',
+          message: `Task ${isEdit ? 'updated' : 'added'} successfully`,
         });
       }
       console.log(data, formattedData)
@@ -118,8 +118,8 @@ const TaskModel = ({
       showToast({ message: 'An error occurred', type: 'error' });
       console.error('error on login', error);
     } finally {
-      // setOpen(false);
-      // reset();
+      setOpen(false);
+      reset();
     }
   };
 
@@ -284,7 +284,7 @@ const TaskModel = ({
 };
 
 type AddStreakRewardsProps = {
-  control: Control<FormType, any>;
+  control: Control<FormType, unknown>;
   errors: FieldErrors<FormType>;
 };
 

@@ -84,8 +84,8 @@ const ClanModel = ({
       showToast({ message: 'An error occurred', type: 'error' });
       console.error('error on login', error);
     } finally {
-      // setOpen(false);
-      // reset();
+      setOpen(false);
+      reset();
     }
   };
 

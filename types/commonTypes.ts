@@ -17,7 +17,7 @@ export type SelectedRowsType = Set<string> | 'all';
 
 export type TableRowTypes = {
   key: string | number;
-  [key: string]: string | number | boolean;
+  [key: string]: string | number | boolean | null;
 };
 
 export interface CustomTableProps {

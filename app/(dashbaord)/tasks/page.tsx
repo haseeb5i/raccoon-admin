@@ -16,7 +16,7 @@ import { SerializedError } from '@reduxjs/toolkit';
 import { showToast } from '@/utils/toast';
 
 // Types
-import { Task, PaginationType, TableColumnTypes } from '@/types/commonTypes';
+import { Task, PaginationType, TableColumnTypes, TaskWithKey } from '@/types/commonTypes';
 import { CUSTOM_CELL_TYPE } from '@/utils/enums';
 
 const page = () => {
@@ -34,7 +34,8 @@ const page = () => {
     limit: pagination.limit,
   });
 
-  const tasksData = data?.data;
+  type WithoutComposite = Omit<TaskWithKey, 'streakRewards' | 'metadata'>[];
+  const tasksData = data?.data as WithoutComposite;
 
   const [deleteData] = useDeleteTaskMutation();
 
@@ -46,19 +47,16 @@ const page = () => {
       } = await deleteData(id);
 
       if (res?.data) {
-        showToast({
-          message: 'Task deleted successfully',
-          type: 'success',
-        });
+        showToast({ type: 'success', message: 'Task deleted successfully' });
       }
     } catch (error) {
       console.error('error', error);
     }
   };
 
-  const onEdit = (data: Task) => {
+  const onEdit = (taskData: Task) => {
     setIsEdit(true);
-    const filterData = tasksData?.filter(item => item.taskId === data.taskId);
+    const filterData = data?.data?.filter(item => item.taskId === taskData.taskId);
     setEditData(filterData?.[0] ?? null);
     setIsOpen(true);
   };
