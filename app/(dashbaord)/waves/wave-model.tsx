@@ -231,7 +231,9 @@ const AddEnemyInWave = ({ control, errors }: AddEnemyInWaveProps) => {
               min: { value: 0, message: minErrorMsg('Count', 0) },
             }}
             control={control}
-            render={({ field }) => <Input label="Count" field={field} errors={errors} />}
+            render={({ field }) => (
+              <Input label="Count" type="number" field={field} errors={errors} />
+            )}
           />
           <Button onClick={() => remove(index)}>
             <MdClearIcon />

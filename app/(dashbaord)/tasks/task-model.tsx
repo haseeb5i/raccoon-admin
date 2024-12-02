@@ -311,9 +311,6 @@ const AddStreakRewards = ({ control, errors }: AddStreakRewardsProps) => {
         <div className="flex items-center gap-4" key={field.id}>
           <Controller
             name={`streakRewards.${index}.dayCount`}
-            rules={{
-              min: { value: 0, message: minErrorMsg('Day Count', 0) },
-            }}
             control={control}
             render={({ field }) => (
               <Input label="Day Count" readOnly field={field} errors={errors} />

@@ -3,7 +3,13 @@
 import React, { useEffect } from 'react';
 
 // use hook form
-import { Controller, useForm } from 'react-hook-form';
+import {
+  Control,
+  Controller,
+  FieldErrors,
+  useFieldArray,
+  useForm,
+} from 'react-hook-form';
 
 // Components
 import Modal from '@/components/atoms/Modal';
@@ -15,25 +21,40 @@ import { Avatar } from '@/types/commonTypes';
 // Redux
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { SerializedError } from '@reduxjs/toolkit';
-import { useAddClanMutation, useUpdateClanMutation } from '@/redux/slice/clanSlice';
+import { useAllClansQuery } from '@/redux/slice/clanSlice';
+import { useAddAvatarMutation, useUpdateAvatarMutation } from '@/redux/slice/avatarSlice';
 
 // Utils
 import { showToast } from '@/utils/toast';
 // import FileUpload from '@/components/FileUpload';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Button, Select, SelectItem } from '@nextui-org/react';
+import { MdAddCircleOutline, MdClear as MdClearIcon } from 'react-icons/md';
 
 const schema = z.object({
   name: z.string().optional(),
   clanId: z.number(),
+  variantsData: z.array(
+    z.object({
+      requiredLevel: z.coerce.number().gte(0),
+      imageUrl: z.string().url(),
+    })
+  ),
 });
 type FormType = z.infer<typeof schema>;
 
 const defaultValues: FormType = {
   clanId: 1,
+  variantsData: [
+    {
+      requiredLevel: 0,
+      imageUrl: '',
+    },
+  ],
 };
 
-const ClanModel = ({
+const AvatarModel = ({
   open,
   setOpen,
   isEdit,
@@ -44,8 +65,9 @@ const ClanModel = ({
   isEdit?: boolean;
   editData?: Avatar | null;
 }) => {
-  const [addClan, { isLoading: isAddLoading }] = useAddClanMutation();
-  const [editClan, { isLoading: isEditLoading }] = useUpdateClanMutation();
+  const { data, isLoading: dataLoading } = useAllClansQuery({ page: 1, limit: 20 });
+  const [addAvatar, { isLoading: isAddLoading }] = useAddAvatarMutation();
+  const [editAvatar, { isLoading: isEditLoading }] = useUpdateAvatarMutation();
 
   const isLoading = isEditLoading || isAddLoading;
 
@@ -53,13 +75,16 @@ const ClanModel = ({
     formState: { errors },
     handleSubmit,
     control,
+    watch,
     setValue,
     reset,
   } = useForm<FormType>({ mode: 'onTouched', resolver: zodResolver(schema) });
 
+  console.log(watch());
+
   useEffect(() => {
     if (isEdit && editData) {
-      reset(editData);
+      reset({ ...editData, variantsData: editData.variants });
     } else {
       reset(defaultValues);
     }
@@ -72,12 +97,12 @@ const ClanModel = ({
         data?: Avatar;
         error?: FetchBaseQueryError | SerializedError;
       } = isEdit
-        ? await editClan({ data: formattedData, id: editData?.clanId })
-        : await addClan(formattedData);
+        ? await editAvatar({ data: formattedData, id: editData?.clanId })
+        : await addAvatar(formattedData);
       if (res?.data) {
         showToast({
           type: 'success',
-          message: `Clan ${isEdit ? 'updated' : 'added'} successfully`,
+          message: `Avatar ${isEdit ? 'updated' : 'added'} successfully`,
         });
       }
     } catch (error) {
@@ -91,12 +116,12 @@ const ClanModel = ({
 
   return (
     <Modal
-      title={`${isEdit ? 'Edit' : 'Add'} Clan`}
+      title={`${isEdit ? 'Edit' : 'Add'} Avatar`}
       isOpen={open}
       onClose={() => setOpen(false)}
       onSubmit={handleSubmit(onSubmit)}
-      primaryButtonLoading={isLoading}
       primaryButtonLabel={isEdit ? 'Update' : 'Add'}
+      primaryButtonLoading={isLoading}
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-3 flex flex-col gap-3">
@@ -105,26 +130,92 @@ const ClanModel = ({
             control={control}
             render={({ field }) => <Input label="Name" field={field} errors={errors} />}
           />
-          {/* <Controller
-          name="mascotUrl"
-          rules={{
-            required: requiredErrorMsg('Clan Mascot'),
-          }}
-          control={control}
-          render={({ field }) => (
-            <div className="mt-3">
-              <p className="text-sm text-foreground">Upload Mascot</p>
-              <FileUpload
+
+          <Controller
+            name="clanId"
+            control={control}
+            render={({ field }) => (
+              <Select
                 {...field}
-                onError={message => showToast({ message, type: 'error' })}
-              />
-            </div>
-          )}
-        /> */}
+                onChange={undefined}
+                size="sm"
+                variant="bordered"
+                color="primary"
+                isLoading={dataLoading}
+                items={data?.data ?? []}
+                classNames={{
+                  base: 'max-w-xs',
+                  label: 'text-default-400 text-xs',
+                  trigger: 'sm:h-[41px] min-h-[41px] h-[41px] border',
+                  value: 'text-foreground sm:text-xs text-xs',
+                }}
+                selectedKeys={[String(field.value)]}
+                onSelectionChange={data => {
+                  if (!data.currentKey) return;
+                  field.onChange(parseInt(data.currentKey));
+                }}
+                label="Select Task Type"
+                isInvalid={Boolean(errors.clanId?.message)}
+                errorMessage={errors.clanId?.message}
+              >
+                {item => <SelectItem key={item.clanId}>{item.name}</SelectItem>}
+              </Select>
+            )}
+          />
+
+          <AddAvatarVariants control={control} errors={errors} />
         </div>
       </form>
     </Modal>
   );
 };
 
-export default ClanModel;
+type AddAvatarVariantsProps = {
+  control: Control<FormType, unknown>;
+  errors: FieldErrors<FormType>;
+};
+
+const AddAvatarVariants = ({ control, errors }: AddAvatarVariantsProps) => {
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'variantsData',
+  });
+
+  return (
+    <>
+      <div className="flex items-center justify-between">
+        <span className="text-sm">Add Variants</span>
+        <Button
+          isIconOnly
+          onClick={() => append({ requiredLevel: fields.length, imageUrl: '' })}
+        >
+          <MdAddCircleOutline />
+        </Button>
+      </div>
+
+      {fields.map((field, index) => (
+        <div className="flex items-center gap-4" key={field.id}>
+          <Controller
+            name={`variantsData.${index}.requiredLevel`}
+            control={control}
+            render={({ field }) => (
+              <Input label="Level" readOnly field={field} errors={errors} />
+            )}
+          />
+
+          <Controller
+            name={`variantsData.${index}.imageUrl`}
+            rules={{ required: true }}
+            control={control}
+            render={({ field }) => <Input label="Image" field={field} errors={errors} />}
+          />
+          <Button onClick={() => remove(index)}>
+            <MdClearIcon />
+          </Button>
+        </div>
+      ))}
+    </>
+  );
+};
+
+export default AvatarModel;
