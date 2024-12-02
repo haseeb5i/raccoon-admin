@@ -63,7 +63,7 @@ const RegisterForm = ({ setActive }: PropsTypes) => {
 
       if (res.error) {
         showToast({
-          message: res.error?.data?.message as string,
+          message: "Something went wrong",
           type: 'error',
         });
       }
