@@ -34,6 +34,7 @@ import { MdAddCircleOutline, MdClear as MdClearIcon } from 'react-icons/md';
 
 const schema = z.object({
   name: z.string().optional(),
+  clanId: z.number().gte(0),
   variantsData: z.array(
     z.object({
       requiredLevel: z.coerce.number().gte(0),
@@ -44,6 +45,7 @@ const schema = z.object({
 type FormType = z.infer<typeof schema>;
 
 const defaultValues: FormType = {
+  clanId: 1,
   variantsData: [{ requiredLevel: 0, imageUrl: '' }],
 };
 
@@ -68,12 +70,9 @@ const AvatarModel = ({
     formState: { errors },
     handleSubmit,
     control,
-    watch,
     setValue,
     reset,
   } = useForm<FormType>({ mode: 'onTouched', resolver: zodResolver(schema) });
-
-  console.log(watch());
 
   useEffect(() => {
     if (isEdit && editData) {
@@ -147,7 +146,7 @@ const AvatarModel = ({
                   if (!data.currentKey) return;
                   field.onChange(parseInt(data.currentKey));
                 }}
-                label="Select Task Type"
+                label="Select Clan"
                 isInvalid={Boolean(errors.clanId?.message)}
                 errorMessage={errors.clanId?.message}
               >
