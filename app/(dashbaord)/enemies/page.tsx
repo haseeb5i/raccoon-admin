@@ -34,7 +34,7 @@ const page = () => {
     limit: pagination.limit,
   });
 
-  const clansData = data?.data;
+  const clansData = data?.data ?? [];
 
   // const [deleteData] = useDeleteEnemyMutation();
 
@@ -81,7 +81,7 @@ const page = () => {
 
       <CustomTable
         columns={EnemyTable}
-        rows={clansData!}
+        rows={clansData}
         isLoading={isFetching || isLoading}
         isEmpty={clansData?.length === 0}
         // onDelete={(data: Enemy) => onDelete(data.clanId)}

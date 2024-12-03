@@ -1,14 +1,9 @@
 // Icons
 import { SidebarItems } from '@/types/sidebarTypes';
 
-import { Category, Notepad2, StatusUp, UserOctagon } from 'iconsax-react';
+import { Category, Notepad2, UserOctagon } from 'iconsax-react';
 
 export const SidebarLinks: SidebarItems[] = [
-  {
-    title: 'dashboard',
-    href: '/dashboard',
-    icon: <StatusUp size="21" />,
-  },
   {
     title: 'users',
     href: '/users',

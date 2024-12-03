@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef, useState } from 'react';
+import { forwardRef, useId, useState } from 'react';
 import { MdFileUpload } from 'react-icons/md';
 import { ControllerRenderProps } from 'react-hook-form';
 import { Spinner, useButton } from '@nextui-org/react';
@@ -19,6 +19,7 @@ const FileUpload = forwardRef<HTMLDivElement, ImageUploadProps>(
   ({ classes, onChange, onError, value: imageUrl }, ref) => {
     const [isUploadLoading, setIsUploadLoading] = useState(false);
     const { getButtonProps, styles } = useButton({ color: 'primary', variant: 'solid' });
+    const id = useId()
 
     const onChangeHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
       try {
@@ -60,15 +61,14 @@ const FileUpload = forwardRef<HTMLDivElement, ImageUploadProps>(
             alt="Post image"
           />
         )}
-        <label htmlFor="image-input">
+        <label htmlFor={id}>
           <input
-            id="image-input"
+            id={id}
             type="file"
             style={{ display: 'none' }}
             accept="image/*"
             onChange={onChangeHandler}
           />
-          <input id="file" type="hidden" />
           <br className='h-2' />
           <span className={styles} {...getButtonProps()}>
             Upload

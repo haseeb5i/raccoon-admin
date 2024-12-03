@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { get } from 'react-hook-form';
 
 // Next UI
 import { Input as NextUlInput, Spinner } from '@nextui-org/react';
@@ -49,6 +50,7 @@ const Input = (props: InputFieldType) => {
 
   const labelText = required ? `${label}*` : label;
   const inputType = type === 'password' ? (isVisible ? 'text' : 'password') : type;
+  const errorMsg = errors ? get(errors, field.name) : ''
 
   const styles = {
     label: `${className?.label} text-default-400 text-xs`,
@@ -60,8 +62,8 @@ const Input = (props: InputFieldType) => {
     inputWrapper: [
       className?.inputWrapper,
       'sm:h-[41px] h-[41px]',
-      `${errors && errors[field.name] ? 'bg-lightPink' : 'bg-transparent'}`,
-      `${errors && errors[field.name] ? 'border-danger-500 data-[hover=true]:border-danger-500 group-data-[focus=true]:border-danger-500' : 'data-[hover=true]:border-primary group-data-[focus=true]:border-primary'}`,
+      `${errorMsg ? 'bg-lightPink' : 'bg-transparent'}`,
+      `${errorMsg ? 'border-danger-500 data-[hover=true]:border-danger-500 group-data-[focus=true]:border-danger-500' : 'data-[hover=true]:border-primary group-data-[focus=true]:border-primary'}`,
       'border z-0',
       'rounded-lg',
       'transition-colors',
@@ -149,12 +151,12 @@ const Input = (props: InputFieldType) => {
         onKeyDown={onKeyPress}
       />
 
-      {showErrorMessage && errors && errors[field.name] && (
+      {showErrorMessage && errorMsg && (
         <Text
           containerTag="h6"
           className="ml-2 mt-1 text-[10px] font-semibold text-danger-500 sm:text-xs"
         >
-          {errors?.[field.name]?.message as string}
+          {errorMsg?.message as string}
         </Text>
       )}
 

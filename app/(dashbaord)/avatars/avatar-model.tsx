@@ -34,7 +34,6 @@ import { MdAddCircleOutline, MdClear as MdClearIcon } from 'react-icons/md';
 
 const schema = z.object({
   name: z.string().optional(),
-  clanId: z.number(),
   variantsData: z.array(
     z.object({
       requiredLevel: z.coerce.number().gte(0),
@@ -45,13 +44,7 @@ const schema = z.object({
 type FormType = z.infer<typeof schema>;
 
 const defaultValues: FormType = {
-  clanId: 1,
-  variantsData: [
-    {
-      requiredLevel: 0,
-      imageUrl: '',
-    },
-  ],
+  variantsData: [{ requiredLevel: 0, imageUrl: '' }],
 };
 
 const AvatarModel = ({
@@ -194,18 +187,15 @@ const AddAvatarVariants = ({ control, errors }: AddAvatarVariantsProps) => {
       </div>
 
       {fields.map((field, index) => (
-        <div className="flex items-center gap-4" key={field.id}>
+        <div className="flex items-start gap-4" key={field.id}>
           <Controller
             name={`variantsData.${index}.requiredLevel`}
             control={control}
-            render={({ field }) => (
-              <Input label="Level" readOnly field={field} errors={errors} />
-            )}
+            render={({ field }) => <Input label="Level" readOnly field={field} />}
           />
 
           <Controller
             name={`variantsData.${index}.imageUrl`}
-            rules={{ required: true }}
             control={control}
             render={({ field }) => <Input label="Image" field={field} errors={errors} />}
           />

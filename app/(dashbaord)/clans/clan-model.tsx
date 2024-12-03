@@ -19,16 +19,25 @@ import { useAddClanMutation, useUpdateClanMutation } from '@/redux/slice/clanSli
 
 // Utils
 import { showToast } from '@/utils/toast';
-import { minErrorMsg, requiredErrorMsg } from '@/utils/helper';
 import FileUpload from '@/components/FileUpload';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { ErrorMessage } from '@/components/ErrorMessage';
 
-type FormType = Omit<Clan, 'clanId' | 'createdAt' | 'updatedAt'>;
+const schema = z.object({
+  name: z.string().min(3),
+  chainId: z.coerce.number(),
+  tokenAddr: z.string(),
+  mascotUrl: z.string().url(),
+  tokenLogo: z.string().url(),
+});
+type FormType = z.infer<typeof schema>;
 
 const defaultValues: FormType = {
   chainId: 1,
-  mascotUrl: '',
   tokenAddr: '0x0',
   name: '',
+  mascotUrl: '',
   tokenLogo: '',
 };
 
@@ -54,7 +63,7 @@ const ClanModel = ({
     control,
     setValue,
     reset,
-  } = useForm<FormType>({ mode: 'onTouched' });
+  } = useForm<FormType>({ mode: 'onTouched', resolver: zodResolver(schema) });
 
   useEffect(() => {
     if (isEdit && editData) {
@@ -79,14 +88,15 @@ const ClanModel = ({
           message: `Clan ${isEdit ? 'updated' : 'added'} successfully`,
         });
       }
-    } catch (error) {
-      showToast({ message: 'An error occurred', type: 'error' });
-      console.error('error on login', error);
-    } finally {
       setOpen(false);
       reset();
+    } catch (error) {
+      console.error('clan create error', error);
+      showToast({ message: 'An error occurred', type: 'error' });
     }
   };
+
+  console.log(errors)
 
   return (
     <Modal
@@ -101,9 +111,6 @@ const ClanModel = ({
         <div className="mb-3 flex flex-col gap-3">
           <Controller
             name="name"
-            rules={{
-              required: requiredErrorMsg('Clan Name'),
-            }}
             control={control}
             render={({ field }) => (
               <Input label="Clan Name" field={field} errors={errors} />
@@ -112,10 +119,6 @@ const ClanModel = ({
 
           <Controller
             name="chainId"
-            rules={{
-              required: requiredErrorMsg('Chain ID'),
-              min: { value: 0, message: minErrorMsg('Chain ID', 0) },
-            }}
             control={control}
             render={({ field }) => (
               <Input label="Chain ID" type="number" field={field} errors={errors} />
@@ -123,9 +126,6 @@ const ClanModel = ({
           />
           <Controller
             name="tokenAddr"
-            rules={{
-              required: requiredErrorMsg('Token Addr'),
-            }}
             control={control}
             render={({ field }) => (
               <Input label="Token Addr" field={field} errors={errors} />
@@ -135,34 +135,30 @@ const ClanModel = ({
 
         <Controller
           name="tokenLogo"
-          rules={{
-            required: requiredErrorMsg('Clan Icon'),
-          }}
           control={control}
           render={({ field }) => (
             <div>
-              <p className="text-foreground text-sm">Upload Logo</p>
+              <p className="text-sm text-foreground">Upload Logo</p>
               <FileUpload
                 {...field}
                 onError={message => showToast({ message, type: 'error' })}
               />
+              <ErrorMessage errorMsg={errors.tokenLogo?.message} />
             </div>
           )}
         />
 
         <Controller
           name="mascotUrl"
-          rules={{
-            required: requiredErrorMsg('Clan Mascot'),
-          }}
           control={control}
           render={({ field }) => (
-            <div className='mt-3'>
-              <p className="text-foreground text-sm">Upload Mascot</p>
+            <div className="mt-3">
+              <p className="text-sm text-foreground">Upload Mascot</p>
               <FileUpload
                 {...field}
                 onError={message => showToast({ message, type: 'error' })}
               />
+              <ErrorMessage errorMsg={errors.mascotUrl?.message} />
             </div>
           )}
         />
