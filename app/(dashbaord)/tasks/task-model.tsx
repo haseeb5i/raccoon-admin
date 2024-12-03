@@ -312,7 +312,7 @@ const AddStreakRewards = ({ control, errors }: AddStreakRewardsProps) => {
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'streakRewards',
-    shouldUnregister: true,
+    // shouldUnregister: true,
   });
 
   return (
