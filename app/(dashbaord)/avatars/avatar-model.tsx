@@ -96,13 +96,16 @@ const AvatarModel = ({
           type: 'success',
           message: `Avatar ${isEdit ? 'updated' : 'added'} successfully`,
         });
+
+        setOpen(false);
+        reset();
+      } else {
+        // @ts-expect-error fix error type
+        showToast({ message: res.error?.data?.message ?? '', type: 'error' });
       }
     } catch (error) {
       showToast({ message: 'An error occurred', type: 'error' });
       console.error('error on login', error);
-    } finally {
-      setOpen(false);
-      reset();
     }
   };
 

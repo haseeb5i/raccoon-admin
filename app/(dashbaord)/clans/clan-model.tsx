@@ -87,16 +87,19 @@ const ClanModel = ({
           type: 'success',
           message: `Clan ${isEdit ? 'updated' : 'added'} successfully`,
         });
+        setOpen(false);
+        reset();
+      } else {
+        // @ts-expect-error fix error type
+        showToast({ message: res.error?.data?.message ?? '', type: 'error' });
       }
-      setOpen(false);
-      reset();
     } catch (error) {
       console.error('clan create error', error);
       showToast({ message: 'An error occurred', type: 'error' });
     }
   };
 
-  console.log(errors)
+  console.log(errors);
 
   return (
     <Modal

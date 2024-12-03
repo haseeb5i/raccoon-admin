@@ -87,14 +87,16 @@ const EnemyModel = ({
           type: 'success',
           message: `Enemy ${isEdit ? 'updated' : 'added'} successfully`,
         });
+
+        setOpen(false);
+        reset();
+      } else {
+        // @ts-expect-error fix error type
+        showToast({ message: res.error?.data?.message ?? '', type: 'error' });
       }
-      console.log(data, formattedData);
     } catch (error) {
       showToast({ message: 'An error occurred', type: 'error' });
       console.error('error on login', error);
-    } finally {
-      setOpen(false);
-      reset();
     }
   };
 

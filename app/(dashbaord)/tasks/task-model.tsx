@@ -26,15 +26,56 @@ import { useAddTaskMutation, useUpdateTaskMutation } from '@/redux/slice/taskSli
 
 // Utils
 import { showToast } from '@/utils/toast';
-import { minErrorMsg, requiredErrorMsg } from '@/utils/helper';
 import FileUpload from '@/components/FileUpload';
 import { MdAddCircleOutline, MdClear as MdClearIcon } from 'react-icons/md';
 import { DateValue, getLocalTimeZone, parseDate, today } from '@internationalized/date';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 
-type FormType = Omit<
-  Task,
-  'taskId' | 'createdAt' | 'updatedAt' | 'metadata' | 'expiresAt'
-> & {
+function getPath(taskType: number) {
+  const linkRequired = taskType === 2 || taskType === 9;
+  if (linkRequired) return 'link';
+
+  const requireTweetId = taskType === 5 || taskType === 6;
+  if (requireTweetId) return 'tweetId';
+
+  const requireUsername = taskType === 7;
+  if (requireUsername) return 'targetUsername';
+
+  return null;
+}
+
+const schema = z
+  .object({
+    title: z.string().min(3),
+    link: z.string().url().or(z.literal('')),
+    rewardCoins: z.coerce.number().gte(0),
+    repeatable: z.boolean(),
+    type: z.number().gt(0),
+    iconUrl: z.string().url(),
+    tweetId: z.string().optional(),
+    targetUsername: z.string().optional(),
+    streakRewards: z.array(
+      z.object({
+        dayCount: z.number().gt(0),
+        rewardCoins: z.coerce.number().gt(0),
+      })
+    ),
+  })
+  .refine(
+    data => {
+      const p = getPath(data.type);
+      if (p === 'link' && !data.link) return false;
+      if (p === 'targetUsername' && !data.targetUsername) return false;
+      if (p === 'tweetId' && !data.tweetId) return false;
+      return true;
+    },
+    data => ({
+      message: `${getPath(data.type)} is rquired`,
+      path: [getPath(data.type) ?? ''],
+    })
+  );
+type FormType = z.infer<typeof schema> & {
   expirey?: DateValue | null;
 };
 
@@ -71,7 +112,7 @@ const TaskModel = ({
     setValue,
     reset,
     watch,
-  } = useForm<FormType>({ mode: 'onTouched' });
+  } = useForm<FormType>({ mode: 'onTouched', resolver: zodResolver(schema) });
 
   useEffect(() => {
     if (isEdit && editData) {
@@ -79,7 +120,6 @@ const TaskModel = ({
       if (editData.expiresAt) {
         expirey = parseDate(editData.expiresAt);
       }
-
       reset({
         ...editData,
         expirey,
@@ -107,29 +147,28 @@ const TaskModel = ({
       } = isEdit
         ? await editTask({ data: formattedData, id: editData?.taskId })
         : await addTask(formattedData);
+      console.log('res', res);
       if (res?.data) {
         showToast({
           type: 'success',
           message: `Task ${isEdit ? 'updated' : 'added'} successfully`,
         });
+        setOpen(false);
+        reset();
+      } else {
+        // @ts-expect-error fix error type
+        showToast({ message: res.error?.data?.message ?? '', type: 'error' });
       }
-      console.log(data, formattedData)
     } catch (error) {
       showToast({ message: 'An error occurred', type: 'error' });
       console.error('error on login', error);
-    } finally {
-      setOpen(false);
-      reset();
     }
   };
 
   const taskType = watch('type');
   const isDailyReward = taskType === 1;
-  const linkRequired = taskType === 2 || taskType === 9;
-  const requireTweetId = taskType === 5 || taskType === 6;
-  const requireUsername = taskType === 7;
-  const isTwitterTask = requireTweetId || requireUsername;
-  const metaKey = requireTweetId ? 'tweetId' : 'targetUsername';
+  const metaKey = getPath(taskType);
+  const isTwitterTask = metaKey === 'tweetId' || metaKey === 'targetUsername';
 
   return (
     <Modal
@@ -144,9 +183,6 @@ const TaskModel = ({
         <div className="mb-3 flex flex-col gap-3">
           <Controller
             name="title"
-            rules={{
-              required: requiredErrorMsg('Task Name'),
-            }}
             control={control}
             render={({ field }) => (
               <Input label="Task Name" field={field} errors={errors} />
@@ -155,9 +191,6 @@ const TaskModel = ({
 
           <Controller
             name="link"
-            rules={{
-              required: linkRequired ? requiredErrorMsg('Task Link') : undefined,
-            }}
             control={control}
             render={({ field }) => (
               <Input label="Task LInk" field={field} errors={errors} />
@@ -165,10 +198,6 @@ const TaskModel = ({
           />
           <Controller
             name="rewardCoins"
-            rules={{
-              required: requiredErrorMsg('Reward points'),
-              min: { value: 0, message: minErrorMsg('Reward points', 0) },
-            }}
             control={control}
             render={({ field }) => (
               <Input label="Reward Points" type="number" field={field} errors={errors} />
@@ -178,9 +207,6 @@ const TaskModel = ({
           <Controller
             name="type"
             control={control}
-            rules={{
-              required: requiredErrorMsg('Task Type'),
-            }}
             render={({ field }) => (
               <Select
                 {...field}
@@ -213,15 +239,12 @@ const TaskModel = ({
           <Controller
             name="expirey"
             control={control}
-            rules={{
-              required: taskType === 9 ? requiredErrorMsg('Expires At') : undefined,
-            }}
             render={({ field }) => (
               <DateInput
                 {...field}
                 classNames={{
                   label: 'text-default-400 text-xs',
-                  segment: "text-foreground sm:text-xs text-xs"
+                  segment: 'text-foreground sm:text-xs text-xs',
                 }}
                 minValue={today(getLocalTimeZone())}
                 label="Expires At"
@@ -230,6 +253,22 @@ const TaskModel = ({
               />
             )}
           />
+
+          {isTwitterTask && (
+            <Controller
+              name={metaKey}
+              shouldUnregister
+              control={control}
+              render={({ field }) => (
+                <Input
+                  type="text"
+                  label={metaKey === 'tweetId' ? 'Tweet Id' : 'Target Username'}
+                  field={field}
+                  errors={errors}
+                />
+              )}
+            />
+          )}
 
           <Controller
             name="repeatable"
@@ -247,28 +286,9 @@ const TaskModel = ({
           />
 
           {isDailyReward && <AddStreakRewards control={control} errors={errors} />}
-          {isTwitterTask && (
-            <div className="flex items-center gap-5">
-              <span className="text-sm">
-                {requireTweetId ? 'Tweet Id' : 'Target Username'}
-              </span>
-              <Controller
-                name={metaKey}
-                rules={{ required: requiredErrorMsg(metaKey) }}
-                shouldUnregister
-                control={control}
-                render={({ field }) => (
-                  <Input type="text" field={field} errors={errors} />
-                )}
-              />
-            </div>
-          )}
 
           <Controller
             name="iconUrl"
-            rules={{
-              required: requiredErrorMsg('Task Icon'),
-            }}
             control={control}
             render={({ field }) => (
               <FileUpload
@@ -301,14 +321,14 @@ const AddStreakRewards = ({ control, errors }: AddStreakRewardsProps) => {
         <span className="text-sm">Streak Rewards</span>
         <Button
           isIconOnly
-          onClick={() => append({ dayCount: fields.length + 1, rewardCoins: '' })}
+          onClick={() => append({ dayCount: fields.length + 1, rewardCoins: 0 })}
         >
           <MdAddCircleOutline />
         </Button>
       </div>
 
       {fields.map((field, index) => (
-        <div className="flex items-center gap-4" key={field.id}>
+        <div className="flex items-start gap-4" key={field.id}>
           <Controller
             name={`streakRewards.${index}.dayCount`}
             control={control}
@@ -319,9 +339,6 @@ const AddStreakRewards = ({ control, errors }: AddStreakRewardsProps) => {
 
           <Controller
             name={`streakRewards.${index}.rewardCoins`}
-            rules={{
-              min: { value: 0, message: minErrorMsg('Reward points', 0) },
-            }}
             control={control}
             render={({ field }) => (
               <Input label="Reward Coins" field={field} errors={errors} />
@@ -337,14 +354,14 @@ const AddStreakRewards = ({ control, errors }: AddStreakRewardsProps) => {
 };
 
 export const taskTypes = [
-  { key: 1, label: 'Daily Reward' },
+  { key: '1', label: 'Daily Reward' },
+  { key: '9', label: 'Daily Video' },
   // { key: '2', label: 'Quest' },
   // { key: '3', label: 'Ad' },
   { key: '4', label: 'Referral' },
   { key: '5', label: 'xRetweet' },
   { key: '6', label: 'xReply' },
   { key: '7', label: 'xFollow' },
-  { key: '9', label: 'dailyVideo' },
 ];
 
 export default TaskModel;

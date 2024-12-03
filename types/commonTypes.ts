@@ -116,7 +116,7 @@ export type Task = {
   updatedAt: string;
   streakRewards: Array<{
     dayCount: number;
-    rewardCoins: number | string; // for form compat
+    rewardCoins: number ;
   }>;
   tweetId?: string; // for xReply and xRetweet
   targetUsername?: string; // for xFollow
