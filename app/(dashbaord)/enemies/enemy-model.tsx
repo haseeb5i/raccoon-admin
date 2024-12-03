@@ -19,9 +19,18 @@ import { useAddEnemyMutation, useUpdateEnemyMutation } from '@/redux/slice/gameS
 
 // Utils
 import { showToast } from '@/utils/toast';
-import { minErrorMsg, requiredErrorMsg } from '@/utils/helper';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 
-type FormType = Omit<Enemy, 'enemyTypeId' | 'createdAt' | 'updatedAt'>;
+const schema = z.object({
+  baseSpeed: z.coerce.number().gt(0),
+  baseXP: z.coerce.number().gt(0),
+  dropArrows: z.coerce.number().gt(0),
+  enemyType: z.string().min(2),
+  hitPoints: z.coerce.number().gt(0),
+  lateralMove: z.coerce.number().gt(0),
+});
+type FormType = z.infer<typeof schema>;
 
 const defaultValues: FormType = {
   baseSpeed: 0,
@@ -54,7 +63,7 @@ const EnemyModel = ({
     control,
     setValue,
     reset,
-  } = useForm<FormType>({ mode: 'onTouched' });
+  } = useForm<FormType>({ mode: 'onTouched', resolver: zodResolver(schema) });
 
   useEffect(() => {
     if (isEdit && editData) {
@@ -102,9 +111,6 @@ const EnemyModel = ({
         <div className="mb-3 flex flex-col gap-3">
           <Controller
             name="enemyType"
-            rules={{
-              required: requiredErrorMsg('Enemy Name'),
-            }}
             control={control}
             render={({ field }) => (
               <Input label="Enemy Name" field={field} errors={errors} />
@@ -113,10 +119,6 @@ const EnemyModel = ({
 
           <Controller
             name="baseSpeed"
-            rules={{
-              required: requiredErrorMsg('Base speed'),
-              min: { value: 0, message: minErrorMsg('Reward speed', 0) },
-            }}
             control={control}
             render={({ field }) => (
               <Input label="Base Speed" type="number" field={field} errors={errors} />
@@ -124,10 +126,6 @@ const EnemyModel = ({
           />
           <Controller
             name="baseXP"
-            rules={{
-              required: requiredErrorMsg('Base XP'),
-              min: { value: 0, message: minErrorMsg('Base XP', 0) },
-            }}
             control={control}
             render={({ field }) => (
               <Input label="Base XP" type="number" field={field} errors={errors} />
@@ -137,10 +135,6 @@ const EnemyModel = ({
           <Controller
             name="dropArrows"
             control={control}
-            rules={{
-              required: requiredErrorMsg('Drop arrows'),
-              min: { value: 0, message: minErrorMsg('Drop arrows', 0) },
-            }}
             render={({ field }) => (
               <Input label="Drop Arrows" type="number" field={field} errors={errors} />
             )}
@@ -149,10 +143,6 @@ const EnemyModel = ({
           <Controller
             name="hitPoints"
             control={control}
-            rules={{
-              required: requiredErrorMsg('Hit points'),
-              min: { value: 0, message: minErrorMsg('Hit points', 0) },
-            }}
             render={({ field }) => (
               <Input label="Hit Points" type="number" field={field} errors={errors} />
             )}
@@ -160,10 +150,6 @@ const EnemyModel = ({
           <Controller
             name="lateralMove"
             control={control}
-            rules={{
-              required: requiredErrorMsg('Lateral move'),
-              min: { value: 0, message: minErrorMsg('Lateral move', 0) },
-            }}
             render={({ field }) => (
               <Input label="Lateral Move" type="number" field={field} errors={errors} />
             )}

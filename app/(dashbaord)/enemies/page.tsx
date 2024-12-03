@@ -8,12 +8,12 @@ import CustomTable from '@/components/molecules/Table';
 import EnemyModel from './enemy-model';
 
 // Redux
-import { useAllEnemiesQuery } from '@/redux/slice/gameSlice';
-// import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
-// import { SerializedError } from '@reduxjs/toolkit';
+import { useAllEnemiesQuery, useDeleteEnemyMutation } from '@/redux/slice/gameSlice';
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
+import { SerializedError } from '@reduxjs/toolkit';
 
 // Utils
-// import { showToast } from '@/utils/toast';
+import { showToast } from '@/utils/toast';
 
 // Types
 import { Enemy, PaginationType, TableColumnTypes } from '@/types/commonTypes';
@@ -36,25 +36,26 @@ const page = () => {
 
   const clansData = data?.data ?? [];
 
-  // const [deleteData] = useDeleteEnemyMutation();
+  const [deleteData] = useDeleteEnemyMutation();
 
-  // const onDelete = async (id: number) => {
-  //   try {
-  //     const res: {
-  //       data?: { message?: string };
-  //       error?: FetchBaseQueryError | SerializedError;
-  //     } = await deleteData(id);
+  const onDelete = async (id: number) => {
+    console.log('delete', id)
+    try {
+      const res: {
+        data?: { message?: string };
+        error?: FetchBaseQueryError | SerializedError;
+      } = await deleteData(id);
 
-  //     if (res?.data) {
-  //       showToast({
-  //         message: 'Enemy deleted successfully',
-  //         type: 'success',
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.error('error', error);
-  //   }
-  // };
+      if (res?.data) {
+        showToast({
+          type: 'success',
+          message: 'Enemy deleted successfully',
+        });
+      }
+    } catch (error) {
+      console.error('error', error);
+    }
+  };
 
   const onEdit = (data: Enemy) => {
     setIsEdit(true);
@@ -84,7 +85,7 @@ const page = () => {
         rows={clansData}
         isLoading={isFetching || isLoading}
         isEmpty={clansData?.length === 0}
-        // onDelete={(data: Enemy) => onDelete(data.clanId)}
+        onDelete={(data: Enemy) => onDelete(data.enemyTypeId)}
         onEdit={(data: Enemy) => onEdit(data)}
         pagination={pagination}
         setPagination={setPagination}

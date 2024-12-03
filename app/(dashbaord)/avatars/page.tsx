@@ -117,6 +117,11 @@ const AvatarTable: TableColumnTypes[] = [
     type: CUSTOM_CELL_TYPE.TEXT,
   },
   {
+    key: 'maxLevel',
+    label: 'Max Level',
+    type: CUSTOM_CELL_TYPE.TEXT,
+  },
+  {
     key: 'createdAt',
     label: 'Created At',
     type: CUSTOM_CELL_TYPE.DATE,

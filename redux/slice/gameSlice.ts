@@ -55,6 +55,13 @@ export const gameSlice = createApi({
       }),
       invalidatesTags: [{ type: 'Game', id: 'Enemy' }],
     }),
+    deleteEnemy: builder.mutation({
+      query: id => ({
+        url: `/game/enemy/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: [{ type: 'Game', id: 'Enemy' }],
+    }),
 
     allWaves: builder.query<Paginated<WaveWithKey>, FindAllParams>({
       query: ({ page = 1, limit = 10 }) => ({
@@ -92,7 +99,8 @@ export const {
   useAllWavesQuery,
   useAllEnemiesQuery,
   useAddEnemyMutation,
+  useDeleteEnemyMutation,
   useUpdateEnemyMutation,
   useAddWaveMutation,
-  useUpdateWaveMutation
+  useUpdateWaveMutation,
 } = gameSlice;

@@ -35,6 +35,7 @@ export const avatarSlice = createApi({
             ...item,
             key: item.avatarId,
             clanName: item.clan.name,
+            maxLevel: item.variants.length,
           })),
         };
       },

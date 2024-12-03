@@ -29,7 +29,6 @@ import {
 
 // Utils
 import { showToast } from '@/utils/toast';
-import { minErrorMsg, requiredErrorMsg } from '@/utils/helper';
 import { Button, Select, SelectItem } from '@nextui-org/react';
 import { MdAddCircleOutline, MdClear as MdClearIcon } from 'react-icons/md';
 import { z } from 'zod';
@@ -41,7 +40,12 @@ const schema = z.object({
   spawnRate: z.coerce.number().gt(0),
   speedMultiplier: z.coerce.number().gt(0),
   enemyTypes: z
-    .array(z.object({ count: z.coerce.number(), enemyTypeId: z.number() }))
+    .array(
+      z.object({
+        count: z.coerce.number().gt(0),
+        enemyTypeId: z.number(),
+      })
+    )
     .min(1),
 });
 
@@ -191,13 +195,10 @@ const AddEnemyInWave = ({ control, errors }: AddEnemyInWaveProps) => {
       </div>
 
       {fields.map((field, index) => (
-        <div className="flex items-center gap-4" key={field.id}>
+        <div className="flex items-start gap-4" key={field.id}>
           <Controller
             name={`enemyTypes.${index}.enemyTypeId`}
             control={control}
-            rules={{
-              required: requiredErrorMsg('Task Type'),
-            }}
             render={({ field }) => (
               <Select
                 {...field}
@@ -226,10 +227,6 @@ const AddEnemyInWave = ({ control, errors }: AddEnemyInWaveProps) => {
           />
           <Controller
             name={`enemyTypes.${index}.count`}
-            rules={{
-              required: requiredErrorMsg('Count'),
-              min: { value: 0, message: minErrorMsg('Count', 0) },
-            }}
             control={control}
             render={({ field }) => (
               <Input label="Count" type="number" field={field} errors={errors} />

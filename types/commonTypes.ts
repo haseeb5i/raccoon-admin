@@ -229,6 +229,7 @@ export type Avatar = {
   clanId: number;
   name?: string;
   createdAt: string;
+  maxLevel: number;
   updatedAt: string;
   clan: { name: string };
   variants: AvatarVariant[];
