@@ -3,6 +3,10 @@ import { SHADOWNET_TOKEN } from '@/utils/constant';
 import { getCookie } from '@/utils/cookie';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+type FindUserParams = FindAllParams & {
+  filters: { username?: string; clanId?: number };
+};
+
 export const userSlice = createApi({
   reducerPath: 'userSlice',
   baseQuery: fetchBaseQuery({
@@ -19,9 +23,10 @@ export const userSlice = createApi({
   }),
   tagTypes: ['User'],
   endpoints: builder => ({
-    allUsers: builder.query<Paginated<UserWithKey>, FindAllParams>({
-      query: ({ page = 1, limit = 10 }) => ({
-        url: `/users?page=${page}&limit=${limit}`,
+    allUsers: builder.query<Paginated<UserWithKey>, FindUserParams>({
+      query: ({ page = 1, limit = 10, filters }) => ({
+        url: '/users',
+        params: { page, limit, ...filters },
         method: 'GET',
       }),
       transformResponse: (response: Paginated<User>) => {
@@ -30,7 +35,9 @@ export const userSlice = createApi({
           data: response.data.map(item => ({
             ...item,
             key: item.tgId,
+            clanName: item.clan.name,
             isActive: item.active ? 'Yes' : 'No',
+            userLevel: item.level.userLevel,
           })),
         };
       },

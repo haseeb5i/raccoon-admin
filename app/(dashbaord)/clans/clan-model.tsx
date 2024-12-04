@@ -121,50 +121,34 @@ const ClanModel = ({
           />
 
           <Controller
-            name="chainId"
+            name="tokenLogo"
             control={control}
             render={({ field }) => (
-              <Input label="Chain ID" type="number" field={field} errors={errors} />
+              <div>
+                <p className="text-sm text-foreground">Upload Logo (same width and height)</p>
+                <FileUpload
+                  {...field}
+                  onError={message => showToast({ message, type: 'error' })}
+                />
+                <ErrorMessage errorMsg={errors.tokenLogo?.message} />
+              </div>
             )}
           />
           <Controller
-            name="tokenAddr"
+            name="mascotUrl"
             control={control}
             render={({ field }) => (
-              <Input label="Token Addr" field={field} errors={errors} />
+              <div className="mt-3">
+                <p className="text-sm text-foreground">Upload Mascot (w: 455px x h: 530px)</p>
+                <FileUpload
+                  {...field}
+                  onError={message => showToast({ message, type: 'error' })}
+                />
+                <ErrorMessage errorMsg={errors.mascotUrl?.message} />
+              </div>
             )}
           />
         </div>
-
-        <Controller
-          name="tokenLogo"
-          control={control}
-          render={({ field }) => (
-            <div>
-              <p className="text-sm text-foreground">Upload Logo</p>
-              <FileUpload
-                {...field}
-                onError={message => showToast({ message, type: 'error' })}
-              />
-              <ErrorMessage errorMsg={errors.tokenLogo?.message} />
-            </div>
-          )}
-        />
-
-        <Controller
-          name="mascotUrl"
-          control={control}
-          render={({ field }) => (
-            <div className="mt-3">
-              <p className="text-sm text-foreground">Upload Mascot</p>
-              <FileUpload
-                {...field}
-                onError={message => showToast({ message, type: 'error' })}
-              />
-              <ErrorMessage errorMsg={errors.mascotUrl?.message} />
-            </div>
-          )}
-        />
       </form>
     </Modal>
   );

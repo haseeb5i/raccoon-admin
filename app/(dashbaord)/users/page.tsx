@@ -18,6 +18,8 @@ type EditData = User;
 
 const Page = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [clanId, setClanId] = useState<number>(-1);
+  const [search, setSearch] = useState<string>('');
   const [editData, setEditData] = useState<EditData | null>(null);
   const [pagination, setPagination] = useState<PaginationType>({
     page: 1,
@@ -25,15 +27,16 @@ const Page = () => {
   });
 
   const { data, isFetching, isLoading } = useAllUsersQuery({
+    filters: { username: search, clanId: clanId !== -1 ? clanId : undefined },
     page: pagination.page,
     limit: pagination.limit,
   });
 
-  const usersData = data?.data;
-  console.log(usersData)
+  const usersData = data?.data ?? [];
 
   const onEdit = (data: EditData) => {
     const filterData = usersData?.filter(item => item.tgId === data.tgId);
+    // @ts-expect-error don't need complete type
     setEditData(filterData?.[0] ?? null);
     setIsOpen(true);
   };
@@ -42,11 +45,17 @@ const Page = () => {
     <>
       <UserModel open={isOpen} setOpen={setIsOpen} editData={editData} />
 
-      <Heading title="Users" />
+      <Heading
+        title="Users"
+        search={search}
+        setSearch={setSearch}
+        clanId={clanId}
+        setClanId={setClanId}
+      />
 
       <CustomTable
         columns={ActivityTable}
-        rows={usersData!}
+        rows={usersData}
         isLoading={isFetching || isLoading}
         isEmpty={usersData?.length === 0}
         pagination={pagination}
@@ -67,6 +76,16 @@ const ActivityTable: TableColumnTypes[] = [
   {
     key: 'username',
     label: 'Username',
+    type: CUSTOM_CELL_TYPE.TEXT,
+  },
+  {
+    key: 'clanName',
+    label: 'Clan',
+    type: CUSTOM_CELL_TYPE.TEXT,
+  },
+  {
+    key: 'userLevel',
+    label: 'Level',
     type: CUSTOM_CELL_TYPE.TEXT,
   },
   {

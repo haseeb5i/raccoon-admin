@@ -96,12 +96,16 @@ export type User = {
   active: boolean;
   createdAt: string;
   updatedAt: string;
+  clan: { name: string };
+  level: { userLevel: number };
 };
 
 // TODO: handle boolean at table level
-export type UserWithKey = User & {
+export type UserWithKey = Omit<User, 'clan' | 'level'> & {
   key: string;
   isActive: string;
+  clanName: string;
+  userLevel: number;
 };
 
 export type Task = {

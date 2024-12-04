@@ -21,7 +21,6 @@ import { CUSTOM_CELL_TYPE } from '@/utils/enums';
 
 const page = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [search, setSearch] = useState<string>('');
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [editData, setEditData] = useState<Clan | null>(null);
   const [pagination, setPagination] = useState<PaginationType>({
@@ -75,8 +74,6 @@ const page = () => {
           setEditData(null);
           setIsOpen(true);
         }}
-        search={search}
-        setSearch={setSearch}
       />
 
       <CustomTable

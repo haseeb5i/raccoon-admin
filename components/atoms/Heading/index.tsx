@@ -2,7 +2,7 @@
 
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { Spinner } from '@nextui-org/react';
 
 // Components
@@ -15,6 +15,7 @@ import { AiOutlineSearch } from 'react-icons/ai';
 
 // Utils
 import debounce from 'debounce';
+import { SelectClan } from '@/components/SelectClan';
 
 const Heading = ({
   title,
@@ -22,23 +23,24 @@ const Heading = ({
   buttonText,
   search,
   setSearch,
+  clanId,
+  setClanId,
 }: {
   title: string;
   buttonClick?: () => void;
   buttonText?: string;
   search?: string;
   setSearch?: (value: string) => void;
+  clanId?: number;
+  setClanId?: (value: number) => void;
 }) => {
   const [searchInput, setSearchInput] = useState(search || '');
   const [loading, setLoading] = useState(false);
 
-  const debouncedSetSearch = useCallback(
-    debounce(value => {
-      if (setSearch) setSearch(value);
-      setLoading(false);
-    }, 500),
-    []
-  );
+  const debouncedSetSearch = debounce(value => {
+    if (setSearch) setSearch(value);
+    setLoading(false);
+  }, 500);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -47,6 +49,7 @@ const Heading = ({
     setLoading(true);
   };
 
+  const showFilters = buttonText || setSearch || setClanId;
   return (
     <>
       <div className="mb-6 flex items-center justify-between pr-2">
@@ -55,7 +58,7 @@ const Heading = ({
         </Text>
       </div>
 
-      {(buttonText || search) && (
+      {showFilters && (
         <div className="mb-5 flex items-center justify-between">
           <div className="relative flex w-80 items-center">
             {setSearch && (
@@ -78,7 +81,7 @@ const Heading = ({
               </>
             )}
           </div>
-
+          {setClanId && <SelectClan value={clanId!} onChange={setClanId} />}
           {buttonText && (
             <Button size="md" onClick={buttonClick}>
               <BiPlus className="text-white" />
