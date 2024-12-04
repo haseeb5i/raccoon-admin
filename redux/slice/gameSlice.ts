@@ -5,6 +5,8 @@ import {
   Enemy,
   WaveWithKey,
   Wave,
+  Level,
+  LevelWithKey,
 } from '@/types/commonTypes';
 import { SHADOWNET_TOKEN } from '@/utils/constant';
 import { getCookie } from '@/utils/cookie';
@@ -92,6 +94,43 @@ export const gameSlice = createApi({
       }),
       invalidatesTags: [{ type: 'Game', id: 'Wave' }],
     }),
+
+    allLevels: builder.query<Paginated<LevelWithKey>, FindAllParams>({
+      query: ({ page = 1, limit = 10 }) => ({
+        url: `/game?type=level&page=${page}&limit=${limit}`,
+        method: 'GET',
+      }),
+      transformResponse: (response: Paginated<Level>) => {
+        return {
+          ...response,
+          data: response.data.map(item => ({ ...item, key: item.id })),
+        };
+      },
+      providesTags: [{ type: 'Game', id: 'Level' }],
+    }),
+    addLevel: builder.mutation({
+      query: data => ({
+        url: '/game/level',
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: [{ type: 'Game', id: 'Level' }],
+    }),
+    updateLevel: builder.mutation({
+      query: ({ data, id }) => ({
+        url: `/game/level/${id}`,
+        method: 'PATCH',
+        body: data,
+      }),
+      invalidatesTags: [{ type: 'Game', id: 'Level' }],
+    }),
+    deleteLevel: builder.mutation({
+      query: id => ({
+        url: `/game/level/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: [{ type: 'Game', id: 'Level' }],
+    }),
   }),
 });
 
@@ -103,4 +142,8 @@ export const {
   useUpdateEnemyMutation,
   useAddWaveMutation,
   useUpdateWaveMutation,
+  useAllLevelsQuery,
+  useAddLevelMutation,
+  useUpdateLevelMutation,
+  useDeleteLevelMutation
 } = gameSlice;

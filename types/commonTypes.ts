@@ -116,7 +116,7 @@ export type Task = {
   updatedAt: string;
   streakRewards: Array<{
     dayCount: number;
-    rewardCoins: number ;
+    rewardCoins: number;
   }>;
   tweetId?: string; // for xReply and xRetweet
   targetUsername?: string; // for xFollow
@@ -238,4 +238,16 @@ export type Avatar = {
 export type AvatarWithKey = Avatar & {
   key: number;
   clanName: string;
+};
+
+export type Level = {
+  id: number;
+  level: number;
+  coins: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type LevelWithKey = Level & {
+  key: number;
 };

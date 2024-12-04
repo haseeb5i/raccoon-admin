@@ -42,7 +42,7 @@ const Sidebar: React.FC<SidebarIF> = ({ isOpen, isHidden, setIsHidden }) => {
             <Image src={Logo} alt="Logo" width={26} height={26} />
             {!isOpen && (
               <Text containerTag="h4" className="w-full text-base font-bold uppercase">
-                shadownet
+               Raccoon Shooter
               </Text>
             )}
           </div>

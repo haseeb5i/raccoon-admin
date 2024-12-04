@@ -47,7 +47,7 @@ const LoginForm = () => {
 
         setCookie(SHADOWNET_TOKEN, data.apiKey);
         setCookie(SHADOWNET_USER, JSON.stringify(userData));
-        router.push('/');
+        router.push('/users');
 
         showToast({
           type: 'success',
