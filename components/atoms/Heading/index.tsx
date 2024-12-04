@@ -60,27 +60,24 @@ const Heading = ({
 
       {showFilters && (
         <div className="mb-5 flex items-center justify-between">
-          <div className="relative flex w-80 items-center">
-            {setSearch && (
-              <>
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  value={searchInput}
-                  onChange={handleChange}
-                  className="h-10 w-full rounded-md border-4 border-none border-grayColor5 bg-grayColor5 pl-4 pr-14 text-base outline-none"
-                />
-
-                <div className="absolute right-[3px] flex h-9 w-9 items-center justify-center rounded-md bg-primary text-white shadow-purpleShadow">
-                  {loading ? (
-                    <Spinner size="sm" color="white" />
-                  ) : (
-                    <AiOutlineSearch className="m-auto h-5 w-5 text-white" />
-                  )}
-                </div>
-              </>
-            )}
-          </div>
+          {setSearch && (
+            <div className="relative flex w-80 items-center">
+              <input
+                type="text"
+                placeholder="Search..."
+                value={searchInput}
+                onChange={handleChange}
+                className="h-10 w-full rounded-md border-4 border-none border-grayColor5 bg-grayColor5 pl-4 pr-14 text-base outline-none"
+              />
+              <div className="absolute right-[3px] flex h-9 w-9 items-center justify-center rounded-md bg-primary text-white shadow-purpleShadow">
+                {loading ? (
+                  <Spinner size="sm" color="white" />
+                ) : (
+                  <AiOutlineSearch className="m-auto h-5 w-5 text-white" />
+                )}
+              </div>
+            </div>
+          )}
           {setClanId && <SelectClan value={clanId!} onChange={setClanId} />}
           {buttonText && (
             <Button size="md" onClick={buttonClick}>

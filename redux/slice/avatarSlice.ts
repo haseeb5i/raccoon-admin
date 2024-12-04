@@ -3,6 +3,10 @@ import { SHADOWNET_TOKEN } from '@/utils/constant';
 import { getCookie } from '@/utils/cookie';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+type FindAvatarParams = FindAllParams & {
+  clanId?: number;
+};
+
 export const avatarSlice = createApi({
   reducerPath: 'avatarSlice',
   baseQuery: fetchBaseQuery({
@@ -23,9 +27,10 @@ export const avatarSlice = createApi({
       query: data => ({ url: '/avatars', method: 'POST', body: data }),
       invalidatesTags: ['Avatar'],
     }),
-    allAvatars: builder.query<Paginated<AvatarWithKey>, FindAllParams>({
-      query: ({ page = 1, limit = 10 }) => ({
-        url: `/avatars?page=${page}&limit=${limit}`,
+    allAvatars: builder.query<Paginated<AvatarWithKey>, FindAvatarParams>({
+      query: ({ page = 1, limit = 10, clanId }) => ({
+        url: '/avatars',
+        params: { clanId, page, limit },
         method: 'GET',
       }),
       transformResponse: (response: Paginated<Avatar>) => {

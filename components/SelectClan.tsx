@@ -33,7 +33,7 @@ export const SelectClan = ({ value, onChange }: SelectClanProps) => {
         if (!data.currentKey) return;
         onChange(parseInt(data.currentKey));
       }}
-      label="Select a clan"
+      label="Select a Clan"
     >
       {item => <SelectItem key={item.clanId}>{item.name}</SelectItem>}
     </Select>

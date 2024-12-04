@@ -26,7 +26,7 @@ import { CUSTOM_CELL_TYPE } from '@/utils/enums';
 
 const page = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [search, setSearch] = useState<string>('');
+  const [clanId, setClanId] = useState<number>(-1);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [editData, setEditData] = useState<Avatar | null>(null);
   const [pagination, setPagination] = useState<PaginationType>({
@@ -35,6 +35,7 @@ const page = () => {
   });
 
   const { data, isFetching, isLoading } = useAllAvatarsQuery({
+    clanId: clanId !== -1 ? clanId : undefined,
     page: pagination.page,
     limit: pagination.limit,
   });
@@ -86,8 +87,8 @@ const page = () => {
           setEditData(null);
           setIsOpen(true);
         }}
-        search={search}
-        setSearch={setSearch}
+        clanId={clanId}
+        setClanId={setClanId}
       />
 
       <CustomTable
