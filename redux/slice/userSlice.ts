@@ -53,8 +53,8 @@ export const userSlice = createApi({
       invalidatesTags: ['User'],
     }),
 
-    userById: builder.query<User, number>({
-      query: id => ({ url: `/user-builds/${id}`, method: 'GET' }),
+    userById: builder.query<User, string>({
+      query: id => ({ url: `/users/${id}`, method: 'GET' }),
     }),
   }),
 });

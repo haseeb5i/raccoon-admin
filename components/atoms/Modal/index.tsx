@@ -59,27 +59,25 @@ const Modal: React.FC<PopUpModalProps> = ({
       }}
     >
       <ModalContent>
-        {onClose => (
-          <>
-            <ModalHeader className="flex flex-col gap-1">{title || 'Model'}</ModalHeader>
-            <ModalBody>{children}</ModalBody>
-            <ModalFooter className="flex items-center justify-between">
-              <CustomButton
-                variant="light"
-                className="border-y-1 border-grayColor5 bg-grayColor5 text-foreground"
-                onClick={onClose}
-              >
-                {secondaryButtonLabel || 'Close'}
-              </CustomButton>
-              <CustomButton
-                onClick={onSubmit}
-                color={submitButtonColor}
-                isLoading={primaryButtonLoading}
-              >
-                {primaryButtonLabel || 'Confirm'}
-              </CustomButton>
-            </ModalFooter>
-          </>
+        <ModalHeader className="flex flex-col gap-1">{title || 'Model'}</ModalHeader>
+        <ModalBody>{children}</ModalBody>
+        {onSubmit && (
+          <ModalFooter className="flex items-center justify-between">
+            <CustomButton
+              variant="light"
+              className="border-y-1 border-grayColor5 bg-grayColor5 text-foreground"
+              onClick={onClose}
+            >
+              {secondaryButtonLabel || 'Close'}
+            </CustomButton>
+            <CustomButton
+              onClick={onSubmit}
+              color={submitButtonColor}
+              isLoading={primaryButtonLoading}
+            >
+              {primaryButtonLabel || 'Confirm'}
+            </CustomButton>
+          </ModalFooter>
         )}
       </ModalContent>
     </NextModal>

@@ -256,7 +256,7 @@ export type LevelWithKey = Level & {
   key: number;
 };
 
-type ItemType = 'Arrow' | 'Bow' | 'PowerUp';
+export type ItemType = 'Arrow' | 'Bow' | 'PowerUp';
 
 export type Product = {
   itemId: number;

@@ -5,6 +5,7 @@ import { useState } from 'react';
 // Components
 import Heading from '@/components/atoms/Heading';
 import CustomTable from '@/components/molecules/Table';
+import UserView from './user-view';
 import UserModel from './user-model';
 
 // Redux
@@ -20,6 +21,8 @@ const Page = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [clanId, setClanId] = useState<number>(-1);
   const [search, setSearch] = useState<string>('');
+  const [openView, setOpenView] = useState<boolean>(false);
+  const [viewId, setViewId] = useState<string>('');
   const [editData, setEditData] = useState<EditData | null>(null);
   const [pagination, setPagination] = useState<PaginationType>({
     page: 1,
@@ -41,9 +44,15 @@ const Page = () => {
     setIsOpen(true);
   };
 
+  const onView = (id: string) => {
+    setViewId(id);
+    setOpenView(true);
+  };
+
   return (
     <>
       <UserModel open={isOpen} setOpen={setIsOpen} editData={editData} />
+      <UserView open={openView} setOpen={setOpenView} viewId={viewId} />
 
       <Heading
         title="Users"
@@ -61,6 +70,7 @@ const Page = () => {
         pagination={pagination}
         setPagination={setPagination}
         totalCount={data?.total}
+        onView={(data: EditData) => onView(data.tgId)}
         onEdit={(data: EditData) => onEdit(data)}
       />
     </>
