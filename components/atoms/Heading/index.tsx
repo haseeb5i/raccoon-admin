@@ -16,6 +16,19 @@ import { AiOutlineSearch } from 'react-icons/ai';
 // Utils
 import debounce from 'debounce';
 import { SelectClan } from '@/components/SelectClan';
+import { SelectProduct } from '@/components/SelectProduct';
+
+type HeadingProps = {
+  title: string;
+  buttonClick?: () => void;
+  buttonText?: string;
+  search?: string;
+  setSearch?: (value: string) => void;
+  clanId?: number;
+  setClanId?: (value: number) => void;
+  productId?: string;
+  setProductId?: (value: string) => void;
+};
 
 const Heading = ({
   title,
@@ -25,15 +38,9 @@ const Heading = ({
   setSearch,
   clanId,
   setClanId,
-}: {
-  title: string;
-  buttonClick?: () => void;
-  buttonText?: string;
-  search?: string;
-  setSearch?: (value: string) => void;
-  clanId?: number;
-  setClanId?: (value: number) => void;
-}) => {
+  productId,
+  setProductId,
+}: HeadingProps) => {
   const [searchInput, setSearchInput] = useState(search || '');
   const [loading, setLoading] = useState(false);
 
@@ -49,7 +56,7 @@ const Heading = ({
     setLoading(true);
   };
 
-  const showFilters = buttonText || setSearch || setClanId;
+  const showFilters = setSearch || setClanId || setProductId;
   return (
     <>
       <div className="mb-6 flex items-center justify-between pr-2">
@@ -58,7 +65,7 @@ const Heading = ({
         </Text>
       </div>
 
-      {showFilters && (
+      {(showFilters || buttonText) && (
         <div className="mb-5 flex items-center justify-between">
           {setSearch && (
             <div className="relative flex w-80 items-center">
@@ -78,7 +85,9 @@ const Heading = ({
               </div>
             </div>
           )}
+          {!showFilters && <div />}
           {setClanId && <SelectClan value={clanId!} onChange={setClanId} />}
+          {setProductId && <SelectProduct value={productId!} onChange={setProductId} />}
           {buttonText && (
             <Button size="md" onClick={buttonClick}>
               <BiPlus className="text-white" />

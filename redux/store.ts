@@ -7,6 +7,7 @@ import { activitySlice } from './slice/activitySlice';
 import { clanSlice } from './slice/clanSlice';
 import { gameSlice } from './slice/gameSlice';
 import { avatarSlice } from './slice/avatarSlice';
+import { productSlice } from './slice/productSlice';
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ export const store = configureStore({
     [clanSlice.reducerPath]: clanSlice.reducer,
     [taskSlice.reducerPath]: taskSlice.reducer,
     [gameSlice.reducerPath]: gameSlice.reducer,
+    [productSlice.reducerPath]: productSlice.reducer,
     [avatarSlice.reducerPath]: avatarSlice.reducer,
     [activitySlice.reducerPath]: activitySlice.reducer,
   },
@@ -27,6 +29,7 @@ export const store = configureStore({
       clanSlice.middleware,
       gameSlice.middleware,
       avatarSlice.middleware,
+      productSlice.middleware,
     ]),
 });
 

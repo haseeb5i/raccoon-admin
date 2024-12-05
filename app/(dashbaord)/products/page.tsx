@@ -5,10 +5,13 @@ import { useState } from 'react';
 // Components
 import Heading from '@/components/atoms/Heading';
 import CustomTable from '@/components/molecules/Table';
-import EnemyModel from './enemy-model';
+import ProductModel from './product-model';
 
 // Redux
-import { useAllEnemiesQuery, useDeleteEnemyMutation } from '@/redux/slice/gameSlice';
+import {
+  useAllProductsQuery,
+  useDeleteProductMutation,
+} from '@/redux/slice/productSlice';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { SerializedError } from '@reduxjs/toolkit';
 
@@ -16,27 +19,29 @@ import { SerializedError } from '@reduxjs/toolkit';
 import { showToast } from '@/utils/toast';
 
 // Types
-import { Enemy, PaginationType, TableColumnTypes } from '@/types/commonTypes';
+import { Product, PaginationType, TableColumnTypes } from '@/types/commonTypes';
 import { CUSTOM_CELL_TYPE } from '@/utils/enums';
 
 const page = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  // const [search, setSearch] = useState<string>('');
   const [isEdit, setIsEdit] = useState<boolean>(false);
-  const [editData, setEditData] = useState<Enemy | null>(null);
+  const [editData, setEditData] = useState<Product | null>(null);
+  const [filter, setFilter] = useState<string>('');
+
   const [pagination, setPagination] = useState<PaginationType>({
     page: 1,
     limit: 10,
   });
 
-  const { data, isFetching, isLoading } = useAllEnemiesQuery({
+  const { data, isFetching, isLoading } = useAllProductsQuery({
+    type: filter !== 'All' ? filter : undefined,
     page: pagination.page,
     limit: pagination.limit,
   });
 
-  const clansData = data?.data ?? [];
+  const productsData = data?.data ?? [];
 
-  const [deleteData] = useDeleteEnemyMutation();
+  const [deleteData] = useDeleteProductMutation();
 
   const onDelete = async (id: number) => {
     try {
@@ -48,7 +53,7 @@ const page = () => {
       if (res?.data) {
         showToast({
           type: 'success',
-          message: 'Enemy deleted successfully',
+          message: 'Product deleted successfully',
         });
       }
     } catch (error) {
@@ -56,34 +61,41 @@ const page = () => {
     }
   };
 
-  const onEdit = (data: Enemy) => {
+  const onEdit = (data: Product) => {
     setIsEdit(true);
-    const filterData = clansData?.filter(item => item.enemyTypeId === data.enemyTypeId);
+    const filterData = productsData?.filter(item => item.itemId === data.itemId);
     setEditData(filterData?.[0] ?? null);
     setIsOpen(true);
   };
 
   return (
     <>
-      <EnemyModel open={isOpen} setOpen={setIsOpen} isEdit={isEdit} editData={editData} />
+      <ProductModel
+        open={isOpen}
+        setOpen={setIsOpen}
+        isEdit={isEdit}
+        editData={editData}
+      />
 
       <Heading
-        title="Enemys"
-        buttonText="Add Enemy"
+        title="Products"
+        buttonText="Add Product"
         buttonClick={() => {
           setIsEdit(false);
           setEditData(null);
           setIsOpen(true);
         }}
+        productId={filter}
+        setProductId={setFilter}
       />
 
       <CustomTable
-        columns={EnemyTable}
-        rows={clansData}
+        columns={Producttable}
+        rows={productsData}
         isLoading={isFetching || isLoading}
-        isEmpty={clansData?.length === 0}
-        onDelete={(data: Enemy) => onDelete(data.enemyTypeId)}
-        onEdit={(data: Enemy) => onEdit(data)}
+        isEmpty={productsData?.length === 0}
+        onDelete={(data: Product) => onDelete(data.itemId)}
+        onEdit={(data: Product) => onEdit(data)}
         pagination={pagination}
         setPagination={setPagination}
         totalCount={data?.total}
@@ -92,35 +104,30 @@ const page = () => {
   );
 };
 
-const EnemyTable: TableColumnTypes[] = [
+const Producttable: TableColumnTypes[] = [
   {
-    key: 'enemyType',
+    key: 'name',
     label: 'Name',
     type: CUSTOM_CELL_TYPE.TEXT,
   },
   {
-    key: 'baseSpeed',
-    label: 'Speed (Base)',
+    key: 'baseCost',
+    label: 'Price',
     type: CUSTOM_CELL_TYPE.TEXT,
   },
   {
-    key: 'lateralMove',
-    label: 'Lateral Move',
+    key: 'imageUrl',
+    label: 'Image',
+    type: CUSTOM_CELL_TYPE.IMAGE,
+  },
+  {
+    key: 'type',
+    label: 'Type',
     type: CUSTOM_CELL_TYPE.TEXT,
   },
   {
-    key: 'hitPoints',
-    label: 'Health',
-    type: CUSTOM_CELL_TYPE.TEXT,
-  },
-  {
-    key: 'baseXP',
-    label: 'Base XP',
-    type: CUSTOM_CELL_TYPE.TEXT,
-  },
-  {
-    key: 'dropArrows',
-    label: 'Drop Arrows',
+    key: 'soldCount',
+    label: 'Sales',
     type: CUSTOM_CELL_TYPE.TEXT,
   },
   {

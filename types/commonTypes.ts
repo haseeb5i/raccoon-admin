@@ -255,3 +255,22 @@ export type Level = {
 export type LevelWithKey = Level & {
   key: number;
 };
+
+type ItemType = 'Arrow' | 'Bow' | 'PowerUp';
+
+export type Product = {
+  itemId: number;
+  name: string;
+  baseCost: number;
+  maxLevel: number;
+  imageUrl: string;
+  type: ItemType;
+  deleted: boolean;
+  createdAt: string;
+  updatedAt: string;
+  soldCount: number;
+};
+
+export type ProductWithKey = Product & {
+  key: number;
+};
