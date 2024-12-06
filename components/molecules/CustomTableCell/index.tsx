@@ -4,16 +4,16 @@ import { FC, PropsWithChildren } from 'react';
 import { removeHyphensUnderscoresAndMakeCamelCase, formatDate } from '@/utils/helper';
 
 // Components
-import Badge from '../../atoms/Badge';
+import Badge from '@/components/atoms/Badge';
 import Text from '@/components/atoms/commonText';
-import ActionDropdown from '@/components/atoms/ActionDropdown';
+// import ActionDropdown from '@/components/atoms/ActionDropdown';
 
 // Types
 import { CustomTableCellProps } from '@/types/commonTypes';
 import { CUSTOM_CELL_TYPE } from '@/utils/enums';
 
 // Icons
-import { Eye, Trash } from 'iconsax-react';
+import { Eye, Trash, Edit } from 'iconsax-react';
 
 const CustomTableCell: FC<PropsWithChildren<CustomTableCellProps>> = ({
   children,
@@ -22,13 +22,9 @@ const CustomTableCell: FC<PropsWithChildren<CustomTableCellProps>> = ({
   onView,
   onEdit,
   onDelete,
-  customActionMenu,
   data,
-  TrashIcon,
-  showActionDropdown,
   rowkey,
   align,
-  conditionalType,
   subtext,
 }) => {
   if (rowkey === 'fieldNotInApi') {
@@ -74,22 +70,26 @@ const CustomTableCell: FC<PropsWithChildren<CustomTableCellProps>> = ({
 
     case CUSTOM_CELL_TYPE.ACTION:
       return (
-        <div className="flex items-center justify-center">
-          {TrashIcon && (
-            <Trash
-              size="24"
-              onClick={onDelete}
-              className="cursor-pointer text-danger-500 duration-200 hover:scale-105 hover:text-danger-600"
+        <div className="flex items-center justify-center gap-2">
+          {onView && (
+            <Eye
+              size="20"
+              onClick={() => onView(data)}
+              className="cursor-pointer text-primary-500 duration-200 hover:scale-105 hover:text-primary-600"
             />
           )}
-          {showActionDropdown && (
-            <ActionDropdown
-              onView={onView}
-              onEdit={onEdit}
-              onDelete={onDelete}
-              customActionMenu={customActionMenu}
-              conditionalType={conditionalType}
-              data={data}
+          {onEdit && (
+            <Edit
+              size="20"
+              onClick={() => onEdit(data)}
+              className="cursor-pointer text-primary-500 duration-200 hover:scale-105 hover:text-primary-600"
+            />
+          )}
+          {onDelete && (
+            <Trash
+              size="20"
+              onClick={() => onDelete(data)}
+              className="cursor-pointer text-danger-500 duration-200 hover:scale-105 hover:text-danger-600"
             />
           )}
         </div>

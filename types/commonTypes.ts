@@ -2,6 +2,7 @@
 import { BADGE_VARIANTS, CUSTOM_CELL_TYPE } from '@/utils/enums';
 import { dropDownMenus } from './dropDownTypes';
 import { Dispatch, SetStateAction } from 'react';
+import { DateValue, SortDescriptor } from '@nextui-org/react';
 
 export interface BreadCrumbsProps {
   title: string;
@@ -14,6 +15,10 @@ export type PaginationType = {
 };
 
 export type SelectedRowsType = Set<string> | 'all';
+export type DateRange = {
+  start: DateValue;
+  end: DateValue;
+};
 
 export type TableRowTypes = {
   key: string | number;
@@ -40,21 +45,20 @@ export interface CustomTableProps {
   selectedRows?: SelectedRowsType;
   setSelectedRows?: (_data: any) => void;
   conditionalType?: string;
+  sort?: TableSortType;
+  setSort?: Dispatch<SetStateAction<TableSortType>>;
 }
 
 export type TableColumnTypes = {
   key: string;
   label: string;
   type: CUSTOM_CELL_TYPE;
+  canSort?: boolean;
   align?: 'left' | 'center' | 'right';
   subItem?: TableColumnTypes;
 };
 
-export type TableSortTypes = {
-  field: string | '';
-  type: CUSTOM_CELL_TYPE.TEXT | CUSTOM_CELL_TYPE.DATE | '';
-  count: number;
-};
+export type TableSortType = SortDescriptor;
 
 export interface TableCellProps {
   type: CUSTOM_CELL_TYPE;
@@ -77,7 +81,9 @@ export type ActionDropdownProps = {
 
 export interface CustomTableCellProps extends TableCellProps, ActionDropdownProps {}
 
-export type FindAllParams = PaginationType & {};
+export type FindAllParams = PaginationType & {
+  dateRange?: string;
+};
 
 export type Paginated<T> = {
   data: T[];
@@ -98,6 +104,33 @@ export type User = {
   updatedAt: string;
   clan: { name: string };
   level: { userLevel: number };
+};
+
+type UserItem = {
+  userItemId: number;
+  level: number;
+  remaining: number;
+  favorite: boolean;
+  itemId: number;
+  tgId: string;
+  createdAt: string;
+  updatedAt: string;
+  storeItem: StoreItem;
+};
+
+type StoreItem = {
+  itemId: number;
+  name: string;
+  baseCost: number;
+  maxLevel: number;
+  imageUrl: string;
+  type: string;
+  deleted: boolean;
+};
+
+export type UserProfile = User & {
+  items: UserItem[];
+  xUsername: string | null;
 };
 
 // TODO: handle boolean at table level

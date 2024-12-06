@@ -12,7 +12,13 @@ import UserModel from './user-model';
 import { useAllUsersQuery } from '@/redux/slice/userSlice';
 
 // Types
-import { PaginationType, TableColumnTypes, User } from '@/types/commonTypes';
+import {
+  DateRange,
+  PaginationType,
+  TableColumnTypes,
+  TableSortType,
+  User,
+} from '@/types/commonTypes';
 import { CUSTOM_CELL_TYPE } from '@/utils/enums';
 
 type EditData = User;
@@ -28,9 +34,16 @@ const Page = () => {
     page: 1,
     limit: 10,
   });
+  const [range, setRange] = useState<DateRange | null>(null);
+  const [sort, setSort] = useState<TableSortType>({ column: '' });
 
   const { data, isFetching, isLoading } = useAllUsersQuery({
-    filters: { username: search, clanId: clanId !== -1 ? clanId : undefined },
+    sorting: sort,
+    dateRange: range ? `${range.start},${range.end}` : undefined,
+    filters: {
+      username: search || undefined,
+      clanId: clanId !== -1 ? clanId : undefined,
+    },
     page: pagination.page,
     limit: pagination.limit,
   });
@@ -60,6 +73,8 @@ const Page = () => {
         setSearch={setSearch}
         clanId={clanId}
         setClanId={setClanId}
+        dateRange={range}
+        setDateRange={setRange}
       />
 
       <CustomTable
@@ -69,6 +84,8 @@ const Page = () => {
         isEmpty={usersData?.length === 0}
         pagination={pagination}
         setPagination={setPagination}
+        sort={sort}
+        setSort={setSort}
         totalCount={data?.total}
         onView={(data: EditData) => onView(data.tgId)}
         onEdit={(data: EditData) => onEdit(data)}
@@ -87,6 +104,7 @@ const ActivityTable: TableColumnTypes[] = [
     key: 'username',
     label: 'Username',
     type: CUSTOM_CELL_TYPE.TEXT,
+    canSort: true,
   },
   {
     key: 'clanName',
@@ -107,6 +125,7 @@ const ActivityTable: TableColumnTypes[] = [
     key: 'totalCoins',
     label: 'Total Coins',
     type: CUSTOM_CELL_TYPE.TEXT,
+    canSort: true,
   },
   {
     key: 'fuelCapacity',

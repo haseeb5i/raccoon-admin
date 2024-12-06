@@ -156,7 +156,7 @@ const ProductModel = ({
             name="type"
             control={control}
             render={({ field }) => (
-              <SelectProduct value={field.value} onChange={field.onChange} />
+              <SelectProduct skipEmpty value={field.value} onChange={field.onChange} />
             )}
           />
 

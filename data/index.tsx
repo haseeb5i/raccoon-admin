@@ -1,5 +1,5 @@
 // Icons
-import { TableColumnTypes, TableRowTypes } from '@/types/commonTypes';
+import { TableColumnTypes } from '@/types/commonTypes';
 import { SidebarItems } from '@/types/sidebarTypes';
 import { CUSTOM_CELL_TYPE } from '@/utils/enums';
 

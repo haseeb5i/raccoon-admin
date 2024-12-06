@@ -4,9 +4,11 @@ import { Select, SelectItem } from '@nextui-org/react';
 type SelectProductProps = {
   value: string;
   onChange: (value: string) => void;
+  skipEmpty?: boolean;
 };
 
-export const SelectProduct = ({ value, onChange }: SelectProductProps) => {
+export const SelectProduct = ({ value, onChange, skipEmpty }: SelectProductProps) => {
+  const entries = !skipEmpty ? productTypes : productTypes.slice(1);
   return (
     <Select
       size="sm"
@@ -25,7 +27,7 @@ export const SelectProduct = ({ value, onChange }: SelectProductProps) => {
       }}
       label="Select Product Type"
     >
-      {productTypes.map(p => (
+      {entries.map(p => (
         <SelectItem key={p.key}>{p.value}</SelectItem>
       ))}
     </Select>

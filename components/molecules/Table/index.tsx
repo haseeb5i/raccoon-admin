@@ -1,7 +1,7 @@
 'use client';
 
 /* eslint-disable no-prototype-builtins */
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 
 // NextUI
 import {
@@ -23,10 +23,10 @@ import Empty from '@/components/atoms/Empty';
 // Utils
 import { CUSTOM_CELL_TYPE, SKELETON_VARIANT, STATUS } from '@/utils/enums';
 import { statusVariant } from '@/utils/constant';
-import { removeWhiteSpaces, sortArray } from '@/utils/helper';
+import { removeWhiteSpaces } from '@/utils/helper';
 
 // Types
-import { CustomTableProps, TableColumnTypes, TableSortTypes } from '@/types/commonTypes';
+import { CustomTableProps } from '@/types/commonTypes';
 
 const CustomTable = ({
   selectionMode = 'none',
@@ -48,50 +48,9 @@ const CustomTable = ({
   selectedRows,
   setSelectedRows,
   conditionalType,
+  sort,
+  setSort,
 }: CustomTableProps) => {
-  const [sort, setSort] = useState<TableSortTypes>({
-    field: '',
-    type: '',
-    count: -1,
-  });
-
-  const setSortOption = (column: TableColumnTypes) => {
-    if (column.type !== CUSTOM_CELL_TYPE.ACTION) {
-      setSort(prev => {
-        if (prev.field === column.key && prev.count === 1) {
-          return { field: '', type: '', count: -1 };
-        } else if (prev.field !== column.key && prev.count >= 0) {
-          return {
-            field: column.key,
-            type: column.type,
-            count: 0,
-          } as TableSortTypes;
-        }
-        return {
-          field: column.key,
-          type: column.type,
-          count: prev.count + 1,
-        } as TableSortTypes;
-      });
-    }
-  };
-
-  const items = useMemo(() => {
-    if (rows) {
-      if (sort.field && sort.count >= 0) {
-        if (sort.type === CUSTOM_CELL_TYPE.DATE) {
-          //@ts-expect-error fix the weird table setup
-          return sortArray(rows, sort.field, sort.count === 0 ? 'asc' : 'desc', 'date');
-        }
-
-        //@ts-expect-error fix the weird table setup
-        return sortArray(rows, sort.field, sort.count === 0 ? 'asc' : 'desc', 'date');
-      }
-
-      return rows;
-    }
-  }, [rows, sort]);
-
   const classNames = useMemo(
     () => ({
       wrapper: [''],
@@ -131,6 +90,8 @@ const CustomTable = ({
         color="primary"
         selectedKeys={selectedRows}
         onSelectionChange={setSelectedRows}
+        sortDescriptor={sort}
+        onSortChange={setSort}
         checkboxesProps={{
           classNames: {
             wrapper: 'before:border-content3',
@@ -138,34 +99,18 @@ const CustomTable = ({
         }}
       >
         <TableHeader columns={columns}>
-          {column => {
-            return (
-              <TableColumn
-                align="center"
-                key={column.key}
-                className={`${column?.align ? `flex justify-${column.align}` : ''}`}
-              >
-                <button
-                  className={`flex cursor-pointer items-center gap-1 ${
-                    column.type === CUSTOM_CELL_TYPE.ACTION &&
-                    'flex w-full items-center justify-end'
-                  }`}
-                  onClick={() => setSortOption(column)}
-                >
-                  {column.label}
-                  {column.type !== CUSTOM_CELL_TYPE.ACTION &&
-                    column.type !== CUSTOM_CELL_TYPE.EYE && (
-                      <span>
-                        {/* <img src={Sort} alt="Sort" className="h-3 w-2" /> */}
-                      </span>
-                    )}
-                </button>
-              </TableColumn>
-            );
-          }}
+          {column => (
+            <TableColumn
+              allowsSorting={column.canSort}
+              align="center"
+              key={column.key}
+              className={`${column?.align ? `flex justify-${column.align}` : ''}`}
+            >
+              {column.label}
+            </TableColumn>
+          )}
         </TableHeader>
-        {/* @ts-expect-error  fix table type errors */}
-        <TableBody items={items}>
+        <TableBody items={rows}>
           {item => (
             <TableRow
               key={item.key}
