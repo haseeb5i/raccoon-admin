@@ -91,7 +91,7 @@ const ActionDropdown: FC<ActionDropdownProps> = ({
         });
       }
     }
-  }, [customActionMenu, data, conditionalType]);
+  }, [customActionMenu, conditionalType, data ]);
 
   return (
     <CustomDropdown

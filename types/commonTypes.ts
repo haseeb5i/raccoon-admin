@@ -130,6 +130,11 @@ type StoreItem = {
 
 export type UserProfile = User & {
   items: UserItem[];
+  avatar: {
+    requiredLevel: number;
+    imageUrl: string;
+    variantId: number;
+  };
   xUsername: string | null;
 };
 
