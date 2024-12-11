@@ -26,7 +26,7 @@ const page = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [editData, setEditData] = useState<Product | null>(null);
-  const [filter, setFilter] = useState<string>('');
+  const [filter, setFilter] = useState<string>('Arrow');
 
   const [pagination, setPagination] = useState<PaginationType>({
     page: 1,

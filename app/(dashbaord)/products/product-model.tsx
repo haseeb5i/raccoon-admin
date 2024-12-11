@@ -3,7 +3,7 @@
 import React, { useEffect } from 'react';
 
 // use hook form
-import { Controller, useForm } from 'react-hook-form';
+import { Control, Controller, FieldErrors, useForm } from 'react-hook-form';
 
 // Components
 import Modal from '@/components/atoms/Modal';
@@ -33,14 +33,21 @@ const baseSchema = z.object({
   baseCost: z.coerce.number(),
   imageUrl: z.string().url(),
   type: z.enum(['Arrow', 'Bow', 'PowerUp']),
-  arrowData: z.object({}).optional(),
-  bowData: z.object({}).optional(),
+  arrowData: z
+    .object({
+      baseDamage: z.coerce.number().gte(0),
+    })
+    .optional(),
+  bowData: z
+    .object({
+      damageAdd: z.coerce.number().gte(1),
+    })
+    .optional(),
   powerUpData: z.object({}).optional(),
   maxLevel: z.coerce.number(),
 });
 
 const createSchema = baseSchema.refine(d => {
-  console.log(d);
   if (
     (d.type === 'Arrow' && !d.arrowData) ||
     (d.type === 'Bow' && !d.bowData) ||
@@ -59,8 +66,12 @@ const defaultValues: FormType = {
   name: '',
   maxLevel: -1,
   type: 'Arrow',
-  arrowData: {},
-  bowData: {},
+  arrowData: {
+    baseDamage: 50,
+  },
+  bowData: {
+    damageAdd: 1,
+  },
   powerUpData: {},
 };
 
@@ -86,6 +97,7 @@ const ProductModel = ({
     control,
     setValue,
     reset,
+    watch,
   } = useForm<FormType>({
     mode: 'onTouched',
     resolver: zodResolver(isEdit ? baseSchema : createSchema),
@@ -98,8 +110,6 @@ const ProductModel = ({
       reset(defaultValues);
     }
   }, [editData, isEdit, setValue, reset]);
-
-  console.log(errors);
 
   const onSubmit = async (data: FormType) => {
     try {
@@ -126,6 +136,11 @@ const ProductModel = ({
       showToast({ message: 'An error occurred', type: 'error' });
     }
   };
+
+  const productType = watch('type');
+  const isArrow = productType === 'Arrow';
+  const isBow = productType === 'Bow';
+  // const isPowerUp = productType === "PowerUp"
 
   return (
     <Modal
@@ -159,7 +174,8 @@ const ProductModel = ({
               <SelectProduct skipEmpty value={field.value} onChange={field.onChange} />
             )}
           />
-
+          {isBow && <BowForm control={control} errors={errors} />}
+          {isArrow && <ArrowForm control={control} errors={errors} />}
           <Controller
             name="imageUrl"
             control={control}
@@ -177,6 +193,41 @@ const ProductModel = ({
         </div>
       </form>
     </Modal>
+  );
+};
+
+type SubFormProps = {
+  control: Control<FormType>;
+  errors: FieldErrors<FormType>;
+};
+
+const ArrowForm = ({ control, errors }: SubFormProps) => {
+  return (
+    <div className="mb-3 flex flex-col gap-3">
+      <Controller
+        name="arrowData.baseDamage"
+        shouldUnregister
+        control={control}
+        render={({ field }) => (
+          <Input label="Base Damage" type="number" field={field} errors={errors} />
+        )}
+      />
+    </div>
+  );
+};
+
+const BowForm = ({ control, errors }: SubFormProps) => {
+  return (
+    <div className="mb-3 flex flex-col gap-3">
+      <Controller
+        shouldUnregister
+        name="bowData.damageAdd"
+        control={control}
+        render={({ field }) => (
+          <Input label="Damage Multiplier" type="number" field={field} errors={errors} />
+        )}
+      />
+    </div>
   );
 };
 

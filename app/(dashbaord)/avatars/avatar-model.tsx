@@ -125,7 +125,7 @@ const AvatarModel = ({
             control={control}
             render={({ field }) => <Input label="Name" field={field} errors={errors} />}
           />
-
+          {/* TODO: reuse SelectClan component */}
           <Controller
             name="clanId"
             control={control}
