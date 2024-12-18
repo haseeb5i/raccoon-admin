@@ -123,7 +123,7 @@ const ProductModel = ({
       if (res?.data) {
         showToast({
           type: 'success',
-          message: `Product ${isEdit ? 'updated' : 'added'} successfully`,
+          message: `Weapon ${isEdit ? 'updated' : 'added'} successfully`,
         });
         setOpen(false);
         reset();
@@ -144,7 +144,7 @@ const ProductModel = ({
 
   return (
     <Modal
-      title={`${isEdit ? 'Edit' : 'Add'} Product`}
+      title={`${isEdit ? 'Edit' : 'Add'} Weapon`}
       isOpen={open}
       onClose={() => setOpen(false)}
       onSubmit={handleSubmit(onSubmit)}
@@ -157,7 +157,7 @@ const ProductModel = ({
             name="name"
             control={control}
             render={({ field }) => (
-              <Input label="Product Name" field={field} errors={errors} />
+              <Input label="Name" field={field} errors={errors} />
             )}
           />
           <Controller
@@ -174,6 +174,7 @@ const ProductModel = ({
               <SelectProduct skipEmpty value={field.value} onChange={field.onChange} />
             )}
           />
+          <p className='text-sm text-foreground' >Weapon Data</p>
           {isBow && <BowForm control={control} errors={errors} />}
           {isArrow && <ArrowForm control={control} errors={errors} />}
           <Controller

@@ -25,7 +25,7 @@ export const SidebarLinks: SidebarItems[] = [
     icon: <UserOctagon size="21" />,
   },
   {
-    title: 'products',
+    title: 'weapons',
     href: '/products',
     icon: <UserOctagon size="21" />,
   },

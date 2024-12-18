@@ -25,7 +25,7 @@ export const SelectProduct = ({ value, onChange, skipEmpty }: SelectProductProps
         if (!data.currentKey) return;
         onChange(data.currentKey);
       }}
-      label="Select Product Type"
+      label="Select Type"
     >
       {entries.map(p => (
         <SelectItem key={p.key}>{p.value}</SelectItem>
@@ -38,5 +38,5 @@ const productTypes: Array<{ key: ItemType | 'All'; value: string }> = [
   { key: 'All', value: 'All' },
   { key: 'Arrow', value: 'Arrow' },
   { key: 'Bow', value: 'Bow' },
-  { key: 'PowerUp', value: 'PowerUp' },
+  // { key: 'PowerUp', value: 'PowerUp' },
 ];

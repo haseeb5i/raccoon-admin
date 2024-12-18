@@ -78,8 +78,8 @@ const page = () => {
       />
 
       <Heading
-        title="Products"
-        buttonText="Add Product"
+        title="Weapons"
+        buttonText="Add Weapons"
         buttonClick={() => {
           setIsEdit(false);
           setEditData(null);
