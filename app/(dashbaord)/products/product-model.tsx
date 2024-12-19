@@ -35,12 +35,13 @@ const baseSchema = z.object({
   type: z.enum(['Arrow', 'Bow', 'PowerUp']),
   arrowData: z
     .object({
+      damageMulti: z.coerce.number().gte(1),
       baseDamage: z.coerce.number().gte(0),
     })
     .optional(),
   bowData: z
     .object({
-      damageAdd: z.coerce.number().gte(1),
+      damageMulti: z.coerce.number().gte(1),
     })
     .optional(),
   powerUpData: z.object({}).optional(),
@@ -68,9 +69,10 @@ const defaultValues: FormType = {
   type: 'Arrow',
   arrowData: {
     baseDamage: 50,
+    damageMulti: 1.5,
   },
   bowData: {
-    damageAdd: 1,
+    damageMulti: 1.5,
   },
   powerUpData: {},
 };
@@ -156,9 +158,7 @@ const ProductModel = ({
           <Controller
             name="name"
             control={control}
-            render={({ field }) => (
-              <Input label="Name" field={field} errors={errors} />
-            )}
+            render={({ field }) => <Input label="Name" field={field} errors={errors} />}
           />
           <Controller
             name="baseCost"
@@ -174,7 +174,7 @@ const ProductModel = ({
               <SelectProduct skipEmpty value={field.value} onChange={field.onChange} />
             )}
           />
-          <p className='text-sm text-foreground' >Weapon Data</p>
+          <p className="text-sm text-foreground">Weapon Data</p>
           {isBow && <BowForm control={control} errors={errors} />}
           {isArrow && <ArrowForm control={control} errors={errors} />}
           <Controller
@@ -213,6 +213,14 @@ const ArrowForm = ({ control, errors }: SubFormProps) => {
           <Input label="Base Damage" type="number" field={field} errors={errors} />
         )}
       />
+      <Controller
+        name="arrowData.damageMulti"
+        shouldUnregister
+        control={control}
+        render={({ field }) => (
+          <Input label="Damage Multiplier" type="number" field={field} errors={errors} />
+        )}
+      />
     </div>
   );
 };
@@ -222,7 +230,7 @@ const BowForm = ({ control, errors }: SubFormProps) => {
     <div className="mb-3 flex flex-col gap-3">
       <Controller
         shouldUnregister
-        name="bowData.damageAdd"
+        name="bowData.damageMulti"
         control={control}
         render={({ field }) => (
           <Input label="Damage Multiplier" type="number" field={field} errors={errors} />
