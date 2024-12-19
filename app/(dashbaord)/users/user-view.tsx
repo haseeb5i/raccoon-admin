@@ -41,7 +41,7 @@ const ModalContent = ({ viewId }: { viewId?: string }) => {
           width={100}
           height={100}
         />
-        <p className="text-center font-medium mt-1">Level {data?.avatar.requiredLevel}</p>
+        <p className="mt-1 text-center font-medium">Level {data?.avatar.requiredLevel}</p>
       </div>
 
       {data?.items ? (
@@ -50,20 +50,44 @@ const ModalContent = ({ viewId }: { viewId?: string }) => {
         <div className="mt-5 text-center text-lg">No Items purchased</div>
       )}
       <ul>
-        {data?.items.map((i, idx) => (
-          <li className="flex items-center gap-4" key={i.userItemId}>
-            <span>{idx + 1} </span>
-            <Image
-              unoptimized
-              src={i.storeItem.imageUrl}
-              alt={i.storeItem.name}
-              width={50}
-              height={50}
-            />
-            <span> {i.storeItem.name}</span>
-            <span>Level {i.level}</span>
-          </li>
-        ))}
+        <p className="mb-1 font-medium">Bows</p>
+        <div className="mb-3 grid grid-cols-3 gap-1">
+          {data?.items
+            .filter(i => i.storeItem.type === 'Bow')
+            .map(i => (
+              <li key={i.userItemId}>
+                <Image
+                  unoptimized
+                  src={i.storeItem.imageUrl}
+                  alt={i.storeItem.name}
+                  width={70}
+                  height={70}
+                />
+                <p className="mt-1">
+                  {i.storeItem.name} {i.favorite && '(x)'}
+                </p>
+              </li>
+            ))}
+        </div>
+        <p className="mb-1 font-medium">Arrows</p>
+        <div className="grid grid-cols-3 gap-2">
+          {data?.items
+            .filter(i => i.storeItem.type === 'Arrow')
+            .map(i => (
+              <li key={i.userItemId}>
+                <Image
+                  unoptimized
+                  src={i.storeItem.imageUrl}
+                  alt={i.storeItem.name}
+                  width={70}
+                  height={70}
+                />
+                <p className="mt-1">
+                  {i.storeItem.name} {i.favorite && '(x)'}
+                </p>
+              </li>
+            ))}
+        </div>
       </ul>
     </div>
   );
