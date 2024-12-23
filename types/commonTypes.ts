@@ -229,7 +229,8 @@ export type Enemy = {
   hitPoints: number;
   baseXP: number;
   lateralMove: number;
-  dropArrows: number;
+  dropArrowsCount: number;
+  dropArrowsPercent: number;
   createdAt: string;
   updatedAt: string;
 };

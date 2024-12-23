@@ -25,7 +25,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 const schema = z.object({
   baseSpeed: z.coerce.number().gt(0),
   baseXP: z.coerce.number().gt(0),
-  dropArrows: z.coerce.number().gt(0),
+  dropArrowsCount: z.coerce.number().gt(0),
+  dropArrowsPercent: z.coerce.number().gt(0),
   enemyType: z.string().min(2),
   hitPoints: z.coerce.number().gt(0),
   lateralMove: z.coerce.number().gt(0),
@@ -35,7 +36,8 @@ type FormType = z.infer<typeof schema>;
 const defaultValues: FormType = {
   baseSpeed: 0,
   baseXP: 1,
-  dropArrows: 1,
+  dropArrowsCount: 1,
+  dropArrowsPercent: 1,
   enemyType: 'Name',
   hitPoints: 1,
   lateralMove: 0,
@@ -135,10 +137,28 @@ const EnemyModel = ({
           />
 
           <Controller
-            name="dropArrows"
+            name="dropArrowsCount"
             control={control}
             render={({ field }) => (
-              <Input label="Drop Arrows" type="number" field={field} errors={errors} />
+              <Input
+                label="Drop Arrows Count"
+                type="number"
+                field={field}
+                errors={errors}
+              />
+            )}
+          />
+
+          <Controller
+            name="dropArrowsCount"
+            control={control}
+            render={({ field }) => (
+              <Input
+                label="Drop Arrows Count"
+                type="number"
+                field={field}
+                errors={errors}
+              />
             )}
           />
 

@@ -119,8 +119,13 @@ const EnemyTable: TableColumnTypes[] = [
     type: CUSTOM_CELL_TYPE.TEXT,
   },
   {
-    key: 'dropArrows',
+    key: 'dropArrowsCount',
     label: 'Drop Arrows',
+    type: CUSTOM_CELL_TYPE.TEXT,
+  },
+  {
+    key: 'dropArrowsPercent',
+    label: 'Drop Arrows (%)',
     type: CUSTOM_CELL_TYPE.TEXT,
   },
   {
