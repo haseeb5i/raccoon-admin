@@ -102,6 +102,9 @@ export type User = {
   active: boolean;
   createdAt: string;
   updatedAt: string;
+  totalReferrals: number;
+  lastWeekRefs: number;
+  lastMonthRefs: number;
   clan: { name: string };
   level: { userLevel: number };
 };

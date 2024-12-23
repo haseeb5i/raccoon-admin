@@ -89,6 +89,18 @@ const ModalContent = ({ viewId }: { viewId?: string }) => {
             ))}
         </div>
       </ul>
+      <h3 className="mb-2 font-semibold">User Referrals</h3>
+      <div className="grid grid-cols-3 gap-1">
+        <div>
+          Total Referrals: <span>{data?.totalReferrals}</span>
+        </div>
+        <div>
+          Last Week Refs: <span>{data?.lastWeekRefs}</span>
+        </div>
+        <div>
+          Last Month Refs: <span>{data?.lastWeekRefs}</span>
+        </div>
+      </div>
     </div>
   );
 };
