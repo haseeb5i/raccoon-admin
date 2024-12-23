@@ -107,7 +107,21 @@ const ProductModel = ({
 
   useEffect(() => {
     if (isEdit && editData) {
-      reset(editData);
+      console.log('reseting', editData);
+      reset({
+        ...editData,
+        arrowData: editData.arrow
+          ? {
+              baseDamage: editData.arrow.baseDamage,
+              damageMulti: editData.arrow.damageMulti,
+            }
+          : undefined,
+        bowData: editData.bow
+          ? {
+              damageMulti: editData.bow.damageMulti,
+            }
+          : undefined,
+      });
     } else {
       reset(defaultValues);
     }
@@ -207,7 +221,6 @@ const ArrowForm = ({ control, errors }: SubFormProps) => {
     <div className="mb-3 flex flex-col gap-3">
       <Controller
         name="arrowData.baseDamage"
-        shouldUnregister
         control={control}
         render={({ field }) => (
           <Input label="Base Damage" type="number" field={field} errors={errors} />
@@ -215,7 +228,6 @@ const ArrowForm = ({ control, errors }: SubFormProps) => {
       />
       <Controller
         name="arrowData.damageMulti"
-        shouldUnregister
         control={control}
         render={({ field }) => (
           <Input label="Damage Multiplier" type="number" field={field} errors={errors} />
@@ -229,7 +241,6 @@ const BowForm = ({ control, errors }: SubFormProps) => {
   return (
     <div className="mb-3 flex flex-col gap-3">
       <Controller
-        shouldUnregister
         name="bowData.damageMulti"
         control={control}
         render={({ field }) => (

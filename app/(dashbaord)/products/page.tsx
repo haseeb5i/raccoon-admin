@@ -125,6 +125,17 @@ const Producttable: TableColumnTypes[] = [
     label: 'Type',
     type: CUSTOM_CELL_TYPE.TEXT,
   },
+  // TODO: remove these fields to a view modal
+  {
+    key: 'multiplier',
+    label: 'Multiplier',
+    type: CUSTOM_CELL_TYPE.TEXT,
+  },
+  {
+    key: 'damage',
+    label: 'Damage (Base)',
+    type: CUSTOM_CELL_TYPE.TEXT,
+  },
   {
     key: 'soldCount',
     label: 'Sales',

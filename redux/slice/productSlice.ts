@@ -1,9 +1,4 @@
-import {
-  FindAllParams,
-  Paginated,
-  Product,
-  ProductWithKey,
-} from '@/types/commonTypes';
+import { FindAllParams, Paginated, Product, ProductWithKey } from '@/types/commonTypes';
 import { SHADOWNET_TOKEN } from '@/utils/constant';
 import { getCookie } from '@/utils/cookie';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
@@ -44,7 +39,12 @@ export const productSlice = createApi({
       transformResponse: (response: Paginated<Product>) => {
         return {
           ...response,
-          data: response.data.map(item => ({ ...item, key: item.itemId })),
+          data: response.data.map(item => ({
+            ...item,
+            key: item.itemId,
+            multiplier: item.arrow?.damageMulti || item.bow?.damageMulti || 'N/A',
+            damage: item.arrow?.baseDamage ?? 'N/A',
+          })),
         };
       },
       providesTags: ['Product'],

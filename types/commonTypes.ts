@@ -307,8 +307,12 @@ export type Product = {
   createdAt: string;
   updatedAt: string;
   soldCount: number;
+  arrow?: any;
+  bow?: any;
 };
 
 export type ProductWithKey = Product & {
   key: number;
+  damage: string;
+  multiplier: string;
 };
