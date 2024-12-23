@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 
-// manual commit to queue vercel deployment
+// comment to push build
 
 // Redux
 import { Provider } from '@/redux/provider';
