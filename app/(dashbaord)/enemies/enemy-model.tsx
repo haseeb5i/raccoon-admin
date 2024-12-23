@@ -150,11 +150,11 @@ const EnemyModel = ({
           />
 
           <Controller
-            name="dropArrowsCount"
+            name="dropArrowsPercent"
             control={control}
             render={({ field }) => (
               <Input
-                label="Drop Arrows Count"
+                label="Drop Arrows (%)"
                 type="number"
                 field={field}
                 errors={errors}
