@@ -112,16 +112,6 @@ const ActivityTable: TableColumnTypes[] = [
     type: CUSTOM_CELL_TYPE.TEXT,
   },
   {
-    key: 'userLevel',
-    label: 'Level',
-    type: CUSTOM_CELL_TYPE.TEXT,
-  },
-  {
-    key: 'totalReferrals',
-    label: 'Refs Count',
-    type: CUSTOM_CELL_TYPE.TEXT,
-  },
-  {
     key: 'currentCoins',
     label: 'Current Coins',
     type: CUSTOM_CELL_TYPE.TEXT,

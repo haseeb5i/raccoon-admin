@@ -102,11 +102,14 @@ export type User = {
   active: boolean;
   createdAt: string;
   updatedAt: string;
-  totalReferrals: number;
-  lastWeekRefs: number;
-  lastMonthRefs: number;
   clan: { name: string };
-  level: { userLevel: number };
+};
+
+// TODO: handle boolean at table level
+export type UserWithKey = Omit<User, 'clan' | 'level'> & {
+  key: string;
+  isActive: string;
+  clanName: string;
 };
 
 type UserItem = {
@@ -138,15 +141,10 @@ export type UserProfile = User & {
     imageUrl: string;
     variantId: number;
   };
-  xUsername: string | null;
-};
-
-// TODO: handle boolean at table level
-export type UserWithKey = Omit<User, 'clan' | 'level'> & {
-  key: string;
-  isActive: string;
-  clanName: string;
   userLevel: number;
+  totalReferrals: number;
+  lastWeekRefs: number;
+  lastMonthRefs: number;
 };
 
 export type Task = {

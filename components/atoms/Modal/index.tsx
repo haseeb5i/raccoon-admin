@@ -50,6 +50,7 @@ const Modal: React.FC<PopUpModalProps> = ({
       scrollBehavior={'inside'}
       classNames={{
         closeButton: 'mt-[6px]',
+        body: 'pb-4'
       }}
       motionProps={{
         initial: { opacity: 0, scale: 0.3 },

@@ -35,7 +35,11 @@ const ModalContent = ({ viewId }: { viewId?: string }) => {
   const hasNoItems = !hasArrows && !hasBows;
 
   return (
-    <div className="-mt-3 mb-5 min-h-52">
+    <div className="-mt-3 text-sm">
+      <h3 className="mb-2 font-semibold">
+        User Level:
+        <span> {data?.userLevel}</span>
+      </h3>
       <h3 className="mb-2 font-semibold">User Avatar</h3>
       <div className="mb-4 w-fit">
         <Image
@@ -45,13 +49,13 @@ const ModalContent = ({ viewId }: { viewId?: string }) => {
           width={100}
           height={100}
         />
-        <p className="mt-1 text-center text-sm font-medium">
+        <p className="mt-1 text-center font-medium">
           Level {data?.avatar.requiredLevel ?? 0}
         </p>
       </div>
 
       <h3 className="mb-2 font-semibold">Items Purchased</h3>
-      {hasNoItems && <p className="my-4 text-sm">No items purchased</p>}
+      {hasNoItems && <p className="my-4">No items purchased</p>}
       <ul>
         {hasArrows && (
           <>
@@ -101,7 +105,7 @@ const ModalContent = ({ viewId }: { viewId?: string }) => {
         )}
       </ul>
       <h3 className="mb-2 font-semibold">User Referrals</h3>
-      <div className="grid grid-cols-3 gap-1 text-sm">
+      <div className="grid grid-cols-3 gap-1">
         <div>
           <span>Total Referrals: </span>
           <span className="font-semibold">{data?.totalReferrals ?? 0}</span>
