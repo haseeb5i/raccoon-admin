@@ -32,6 +32,7 @@ const baseSchema = z.object({
   name: z.string().min(3),
   baseCost: z.coerce.number(),
   imageUrl: z.string().url(),
+  description: z.string().optional(),
   type: z.enum(['Arrow', 'Bow', 'PowerUp']),
   arrowData: z
     .object({
@@ -173,6 +174,13 @@ const ProductModel = ({
             name="name"
             control={control}
             render={({ field }) => <Input label="Name" field={field} errors={errors} />}
+          />
+          <Controller
+            name="description"
+            control={control}
+            render={({ field }) => (
+              <Input label="Description" field={field} errors={errors} />
+            )}
           />
           <Controller
             name="baseCost"

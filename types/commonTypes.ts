@@ -128,6 +128,7 @@ type StoreItem = {
   itemId: number;
   name: string;
   baseCost: number;
+  description: string | null;
   maxLevel: number;
   imageUrl: string;
   type: string;
