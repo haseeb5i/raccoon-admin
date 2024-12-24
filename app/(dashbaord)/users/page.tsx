@@ -112,6 +112,11 @@ const ActivityTable: TableColumnTypes[] = [
     type: CUSTOM_CELL_TYPE.TEXT,
   },
   {
+    key: 'level',
+    label: 'Level',
+    type: CUSTOM_CELL_TYPE.TEXT,
+  },
+  {
     key: 'currentCoins',
     label: 'Current Coins',
     type: CUSTOM_CELL_TYPE.TEXT,

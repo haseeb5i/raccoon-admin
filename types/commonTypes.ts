@@ -102,6 +102,7 @@ export type User = {
   active: boolean;
   createdAt: string;
   updatedAt: string;
+  level: { userLevel: number };
   clan: { name: string };
 };
 
@@ -110,6 +111,7 @@ export type UserWithKey = Omit<User, 'clan' | 'level'> & {
   key: string;
   isActive: string;
   clanName: string;
+  level: number;
 };
 
 type UserItem = {

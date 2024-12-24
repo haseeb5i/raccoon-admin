@@ -36,10 +36,6 @@ const ModalContent = ({ viewId }: { viewId?: string }) => {
 
   return (
     <div className="-mt-3 text-sm">
-      <h3 className="mb-2 font-semibold">
-        User Level:
-        <span> {data?.userLevel}</span>
-      </h3>
       <h3 className="mb-2 font-semibold">User Avatar</h3>
       <div className="mb-4 w-fit">
         <Image

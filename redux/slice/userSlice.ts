@@ -53,6 +53,7 @@ export const userSlice = createApi({
             key: item.tgId,
             clanName: item.clan.name,
             isActive: item.active ? 'Yes' : 'No',
+            level: item.level.userLevel,
           })),
         };
       },
