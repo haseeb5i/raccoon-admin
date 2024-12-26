@@ -1,9 +1,14 @@
 // Icons
 import { SidebarItems } from '@/types/sidebarTypes';
 
-import { Category, Notepad2, UserOctagon } from 'iconsax-react';
+import { Category, Notepad2, UserOctagon, Home3 } from 'iconsax-react';
 
 export const SidebarLinks: SidebarItems[] = [
+  {
+    title: 'dashboard',
+    href: '/dashboard',
+    icon: <Home3 size="21" />,
+  },
   {
     title: 'users',
     href: '/users',

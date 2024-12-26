@@ -321,3 +321,15 @@ export type ProductWithKey = Product & {
   damage: string;
   multiplier: string;
 };
+
+type UserChartNode = {
+  timestamp: number;
+  count: number;
+};
+
+export type DashboardData = {
+  totalUsers: number;
+  totalPlayers: number;
+  activeUsers: UserChartNode[];
+  newUsers: UserChartNode[];
+};

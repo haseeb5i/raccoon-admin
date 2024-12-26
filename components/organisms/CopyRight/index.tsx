@@ -8,7 +8,7 @@ const CopyRight = () => {
         containerTag="p"
         className="cursor-pointer border-r-2 border-foreground pr-2 text-lightBlack duration-100 hover:text-primary"
       >
-        © 2021 Shadownet
+        © 2025 Raccoon
       </Text>
       <Link
         href="/terms-of-service"

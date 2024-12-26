@@ -8,9 +8,11 @@ import { clanSlice } from './slice/clanSlice';
 import { gameSlice } from './slice/gameSlice';
 import { avatarSlice } from './slice/avatarSlice';
 import { productSlice } from './slice/productSlice';
+import { dashboardSlice } from './slice/dashSlice';
 
 export const store = configureStore({
   reducer: {
+    [dashboardSlice.reducerPath]: dashboardSlice.reducer,
     [loginSlice.reducerPath]: loginSlice.reducer,
     [userSlice.reducerPath]: userSlice.reducer,
     [clanSlice.reducerPath]: clanSlice.reducer,
@@ -22,6 +24,7 @@ export const store = configureStore({
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({}).concat([
+      dashboardSlice.middleware,
       loginSlice.middleware,
       userSlice.middleware,
       taskSlice.middleware,
