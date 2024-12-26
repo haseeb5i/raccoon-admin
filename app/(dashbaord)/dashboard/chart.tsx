@@ -5,18 +5,18 @@ import { Card, Skeleton } from '@nextui-org/react';
 import { useGetDashboardQuery } from '@/redux/slice/dashSlice';
 import { useMemo } from 'react';
 
-export const ActivityChart = () => {
+export const UsersChart = () => {
   const { data, isLoading } = useGetDashboardQuery({});
 
   const series = useMemo(() => {
     if (!data) return [];
     return [
       {
-        name: 'Active',
+        name: 'Active Users',
         data: data.activeUsers,
       },
       {
-        name: 'New',
+        name: 'New Users',
         data: data.newUsers,
       },
     ];
@@ -32,18 +32,46 @@ export const ActivityChart = () => {
 
   return (
     <Card id="chart" className="p-4">
-      <Chart options={options} series={series} type="bar" />
+      <Chart options={userChartOpts} series={series} type="bar" />
     </Card>
   );
 };
 
-const options: ApexOptions = {
-  title: {
-    text: 'Monthly Users',
-  },
+export const GameChart = () => {
+  const { data, isLoading } = useGetDashboardQuery({});
+
+  const series = useMemo(() => {
+    if (!data) return [];
+    return [
+      {
+        name: 'Players',
+        data: data.activePlayers,
+      },
+    ];
+  }, [data]);
+
+  if (isLoading) {
+    return (
+      <Card id="chart" className="p-4">
+        <Skeleton className="h-[430px] rounded-large" />
+      </Card>
+    );
+  }
+
+  return (
+    <Card id="chart" className="p-4">
+      <Chart options={gameChartOpts} series={series} type="bar" />
+    </Card>
+  );
+};
+
+const commonOptions: ApexOptions = {
   chart: {
     type: 'bar',
     height: 430,
+    toolbar: {
+      show: false,
+    },
   },
   plotOptions: {
     bar: {
@@ -78,3 +106,21 @@ const options: ApexOptions = {
     shared: true,
   },
 };
+
+const userChartOpts = Object.assign(
+  {
+    title: {
+      text: 'Monthly Users',
+    },
+  },
+  commonOptions
+);
+
+const gameChartOpts = Object.assign(
+  {
+    title: {
+      text: 'Monthly Players',
+    },
+  },
+  commonOptions
+);

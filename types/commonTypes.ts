@@ -323,8 +323,8 @@ export type ProductWithKey = Product & {
 };
 
 type UserChartNode = {
-  timestamp: number;
-  count: number;
+  x: number;
+  y: number;
 };
 
 export type DashboardData = {
@@ -332,4 +332,5 @@ export type DashboardData = {
   totalPlayers: number;
   activeUsers: UserChartNode[];
   newUsers: UserChartNode[];
+  activePlayers: UserChartNode[];
 };

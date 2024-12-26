@@ -25,17 +25,7 @@ export const dashboardSlice = createApi({
         method: 'GET',
       }),
       transformResponse: ({ data }: { data: DashboardData }) => {
-        return {
-          ...data,
-          activeUsers: data.activeUsers.map(item => ({
-            x: item.timestamp,
-            y: item.count,
-          })),
-          newUsers: data.newUsers.map(item => ({
-            x: item.timestamp,
-            y: item.count,
-          })),
-        };
+        return data;
       },
       providesTags: ['Dashboard'],
     }),

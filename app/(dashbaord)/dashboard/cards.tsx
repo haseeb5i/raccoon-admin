@@ -14,7 +14,7 @@ export const DataCards = () => {
         ) : (
           <p className="text-lg font-bold">{data?.totalUsers}</p>
         )}
-        <p className="mt-2 text-sm">Total Users</p>
+        <p className="mt-1 text-sm">Total Users</p>
         {/* create spark */}
       </Card>
       <Card className="p-4">
@@ -23,7 +23,7 @@ export const DataCards = () => {
         ) : (
           <p className="text-lg font-bold">{data?.totalPlayers}</p>
         )}
-        <p className="mb-2 text-sm">Total Users</p>
+        <p className="mt-1 text-sm">Total Players</p>
         {/* create spark */}
       </Card>
     </div>
