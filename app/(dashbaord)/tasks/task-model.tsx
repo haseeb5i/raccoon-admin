@@ -42,6 +42,9 @@ function getPath(taskType: number) {
   const requireUsername = taskType === 7;
   if (requireUsername) return 'targetUsername';
 
+  const requireWaveNum = taskType === 12;
+  if (requireWaveNum) return 'targetWave';
+
   return null;
 }
 
@@ -55,6 +58,7 @@ const schema = z
     iconUrl: z.string().url(),
     tweetId: z.string().optional(),
     targetUsername: z.string().optional(),
+    targetWave: z.number().optional(),
     streakRewards: z.array(
       z.object({
         dayCount: z.number().gt(0),
@@ -68,6 +72,7 @@ const schema = z
       if (p === 'link' && !data.link) return false;
       if (p === 'targetUsername' && !data.targetUsername) return false;
       if (p === 'tweetId' && !data.tweetId) return false;
+      if (p === 'targetWave' && !data.targetWave) return false;
       return true;
     },
     data => ({
@@ -169,6 +174,7 @@ const TaskModel = ({
   const isDailyReward = taskType === 1;
   const metaKey = getPath(taskType);
   const isTwitterTask = metaKey === 'tweetId' || metaKey === 'targetUsername';
+  const isGameTask = metaKey === 'targetWave';
 
   return (
     <Modal
@@ -270,6 +276,17 @@ const TaskModel = ({
             />
           )}
 
+          {isGameTask && (
+            <Controller
+              name="targetWave"
+              shouldUnregister
+              control={control}
+              render={({ field }) => (
+                <Input type="text" label={'Target Wave'} field={field} errors={errors} />
+              )}
+            />
+          )}
+
           <Controller
             name="repeatable"
             control={control}
@@ -362,6 +379,7 @@ export const taskTypes = [
   { key: '5', label: 'xRetweet' },
   { key: '6', label: 'xReply' },
   { key: '7', label: 'xFollow' },
+  { key: '12', label: 'Max Wave' },
 ];
 
 export default TaskModel;
