@@ -164,9 +164,6 @@ export type Task = {
     dayCount: number;
     rewardCoins: number;
   }>;
-  tweetId?: string; // for xReply and xRetweet
-  targetUsername?: string; // for xFollow
-  targetChannel?: string; // for youtube follow
   metadata: Record<string, string>;
   expiresAt: string | null;
 };

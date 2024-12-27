@@ -370,11 +370,10 @@ const AddStreakRewards = ({ control, errors }: AddStreakRewardsProps) => {
   );
 };
 
+// keep in sync with taskTypeLookup in `constants.ts`
 export const taskTypes = [
   { key: '1', label: 'Daily Reward' },
   { key: '9', label: 'Daily Video' },
-  // { key: '2', label: 'Quest' },
-  // { key: '3', label: 'Ad' },
   { key: '4', label: 'Referral' },
   { key: '5', label: 'xRetweet' },
   { key: '6', label: 'xReply' },

@@ -90,7 +90,7 @@ const commonOptions: ApexOptions = {
   },
   dataLabels: {
     enabled: true,
-    offsetX: -6,
+    // offsetY: 30,
     style: {
       fontSize: '12px',
       colors: ['#fff'],
