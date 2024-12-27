@@ -58,7 +58,7 @@ const schema = z
     iconUrl: z.string().url(),
     tweetId: z.string().optional(),
     targetUsername: z.string().optional(),
-    targetWave: z.number().optional(),
+    targetWave: z.coerce.number().optional(),
     streakRewards: z.array(
       z.object({
         dayCount: z.number().gt(0),

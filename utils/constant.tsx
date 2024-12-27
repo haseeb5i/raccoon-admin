@@ -27,4 +27,5 @@ export const taskTypeLookup = {
   7: 'xFollow',
   9: 'dailyVideo',
   10: 'ytSubscribe',
+  12: 'maxWave'
 } as Record<number, string>;
