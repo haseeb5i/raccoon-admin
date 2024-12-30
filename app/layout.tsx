@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 
-// comment to push build v3
+// comment to push build v4
 
 // Redux
 import { Provider } from '@/redux/provider';
