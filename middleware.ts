@@ -37,5 +37,6 @@ export const config = {
     '/tasks/:path*',
     '/waves/:path*',
     '/users/:path*',
+    '/catapult/:path*',
   ],
 };

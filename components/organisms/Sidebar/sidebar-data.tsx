@@ -45,6 +45,11 @@ export const SidebarLinks: SidebarItems[] = [
     icon: <UserOctagon size="21" />,
   },
   {
+    title: 'Catapult',
+    href: '/catapult',
+    icon: <UserOctagon size="21" />,
+  },
+  {
     title: 'tasks',
     href: '/tasks',
     icon: <Category size="21" />,

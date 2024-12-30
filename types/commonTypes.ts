@@ -292,10 +292,6 @@ export type Level = {
   updatedAt: string;
 };
 
-export type LevelWithKey = Level & {
-  key: number;
-};
-
 export type ItemType = 'Arrow' | 'Bow' | 'PowerUp';
 
 export type Product = {
@@ -330,4 +326,15 @@ export type DashboardData = {
   activeUsers: UserChartNode[];
   newUsers: UserChartNode[];
   activePlayers: UserChartNode[];
+};
+
+export type Catapult = {
+  id: number;
+  baseDamage: number;
+  areaRadius: number;
+  waveCooldown: number;
+  shootCooldown: number;
+  damageMulti: number;
+  createdAt: string;
+  updatedAt: string;
 };
