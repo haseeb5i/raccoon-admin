@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 
 // Components
-import CopyRight from '@/components/organisms/CopyRight';
+// import CopyRight from '@/components/organisms/CopyRight';
 import Header from '@/components/organisms/Header';
 import Sidebar from '@/components/organisms/Sidebar/Sidebar';
 
@@ -20,7 +20,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         >
           <Header isOpen={isOpen} setIsOpen={setIsOpen} setIsHidden={setIsHidden} />
           <div className="min-h-[calc(100vh_-_100px)] p-3">{children}</div>
-          <CopyRight />
+          {/* <CopyRight /> */}
         </div>
       </div>
     </>
