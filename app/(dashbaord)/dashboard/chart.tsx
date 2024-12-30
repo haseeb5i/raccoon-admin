@@ -1,9 +1,13 @@
 'use client';
-import Chart from 'react-apexcharts';
+
+import dynamic from 'next/dynamic';
+
 import { ApexOptions } from 'apexcharts';
 import { Card, Skeleton } from '@nextui-org/react';
 import { useGetDashboardQuery } from '@/redux/slice/dashSlice';
 import { useMemo } from 'react';
+
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 export const UsersChart = () => {
   const { data, isLoading } = useGetDashboardQuery({});

@@ -87,6 +87,7 @@ const Input = (props: InputFieldType) => {
 
   const PasswordShow = () => (
     <button
+      type='button'
       onClick={() => setIsVisible(!isVisible)}
       className="h-full focus:outline-none"
       tabIndex={-1}

@@ -16,7 +16,7 @@ export async function middleware(request: NextRequest) {
       request.nextUrl.pathname === '/' ||
       request.nextUrl.pathname.startsWith('/login')
     ) {
-      return NextResponse.redirect(new URL('/users', request.url));
+      return NextResponse.redirect(new URL('/dashboard', request.url));
     }
   }
 
