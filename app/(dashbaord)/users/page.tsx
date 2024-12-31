@@ -35,7 +35,7 @@ const Page = () => {
     limit: 10,
   });
   const [range, setRange] = useState<DateRange | null>(null);
-  const [sort, setSort] = useState<TableSortType>({ column: '' });
+  const [sort, setSort] = useState<TableSortType>({ column: '', direction: undefined });
 
   const { data, isFetching, isLoading } = useAllUsersQuery({
     sorting: sort,
